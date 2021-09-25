@@ -1,0 +1,13 @@
+SELECT * from Products
+WHERE Type = %TypeID% AND Specs Like "%screen_resolution:1080x1920;%operating_system:Android 10;%"
+
+
+Laptops
+processor:%;graphics:%;operating_system:%;screen_size:%;
+Smartphones
+processor:%;operating_system:%;screen_size:%:camera:%;
+TVs
+screen_size:%;screen_type:%;screen_resolution:%;
+
+TVs
+screen_size:43;screen_type:LED;screen_resolution:%3840x2160;
