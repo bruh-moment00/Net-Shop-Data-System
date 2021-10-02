@@ -8,25 +8,25 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+	<a class="btn btn-outline-primary" value="Добавить" asp-page="Create">Добавить</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Stock[0].ReceiptDate)
+                Дата прибытия
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Stock[0].SellDate)
+                Дата продажи
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Stock[0].Order)
+                Заказ
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Stock[0].Product)
+                Товар
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Stock[0].Status)
+                Статус
             </th>
             <th></th>
         </tr>
@@ -35,16 +35,16 @@
 @foreach (var item in Model.Stock) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ReceiptDate)
+                @Html.DisplayFor(modelItem => item.ReceiptDate.ToString("dd-MMM-yyyy"))
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SellDate)
+                @Html.DisplayFor(modelItem => item.SellDate.ToString("dd-MMM-yyyy"))
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Order.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Product.Name)
+				<a asp-page="/Products/Details" asp-route-id="@item.Product.Id">@Html.DisplayFor(modelItem => item.Product.Name)</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Status.Name)

@@ -290,15 +290,11 @@ namespace Back_Office_Web_Application.Context
 
                 entity.Property(e => e.ProductId).HasColumnName("ProductID");
 
-                entity.Property(e => e.ReceiptDate)
+                entity.Property(e => e.ReceiptDate).HasColumnType("datetime")
                     .IsRequired()
-                    .HasMaxLength(10)
-                    .HasDefaultValueSql("(getdate())")
-                    .IsFixedLength(true);
+                    .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.SellDate)
-                    .HasMaxLength(10)
-                    .IsFixedLength(true);
+                entity.Property(e => e.SellDate).HasColumnType("datetime");
 
                 entity.Property(e => e.StatusId).HasColumnName("StatusID");
 
