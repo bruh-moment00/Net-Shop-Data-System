@@ -21,7 +21,7 @@ namespace Back_Office_Web_Application.Pages.Stock
         }
 
         [BindProperty]
-        public StockList Stock { get; set; }
+        public Models.StockList Stock { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {

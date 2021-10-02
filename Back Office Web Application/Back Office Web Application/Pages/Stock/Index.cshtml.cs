@@ -19,7 +19,7 @@ namespace Back_Office_Web_Application.Pages.Stock
             _context = context;
         }
 
-        public IList<StockList> Stock { get;set; }
+        public IList<Models.StockList> Stock { get;set; }
 
         public async Task OnGetAsync()
         {

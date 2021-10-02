@@ -11,6 +11,6 @@ namespace Back_Office_Web_Application.Models
         public string Email { get; set; }
         public string PasswordHash { get; set; }
 
-        public virtual UsersClient Client { get; set; }
+        public virtual UsersClient UsersClient { get; set; }
     }
 }

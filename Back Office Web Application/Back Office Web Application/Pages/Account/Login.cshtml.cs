@@ -32,8 +32,8 @@ namespace Back_Office_Web_Application.Pages.Authorization
         {
             if (!ModelState.IsValid) return Page();
 
-            UsersEmployeesLogin currentUser = (from user in _context.UsersEmployeesLogin
-                             where user.Email == LoginData.Email
+            UsersEmployeesLogin currentUser = (from user in _context.UsersEmployeesLogins
+                                               where user.Email == LoginData.Email
                              select user).FirstOrDefault();
 
             if(currentUser != null)

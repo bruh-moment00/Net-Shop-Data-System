@@ -28,7 +28,7 @@ namespace Back_Office_Web_Application.Pages.Stock
         }
 
         [BindProperty]
-        public StockList Stock { get; set; }
+        public Models.StockList Stock { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()

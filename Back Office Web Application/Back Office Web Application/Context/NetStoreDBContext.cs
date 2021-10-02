@@ -20,10 +20,6 @@ namespace Back_Office_Web_Application.Context
 
         public virtual DbSet<Brand> Brands { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
-        public virtual DbSet<UsersClient> UsersClients { get; set; }
-        public virtual DbSet<UsersClientsLogin> UsersClientsLogins { get; set; }
-        public virtual DbSet<UsersEmployees> UsersEmployees { get; set; }
-        public virtual DbSet<UsersEmployeesLogin> UsersEmployeesLogin { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderedProduct> OrderedProducts { get; set; }
         public virtual DbSet<OrdersStatus> OrdersStatuses { get; set; }
@@ -31,6 +27,10 @@ namespace Back_Office_Web_Application.Context
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<StockList> Stocks { get; set; }
         public virtual DbSet<StockStatus> StockStatuses { get; set; }
+        public virtual DbSet<UsersClient> UsersClients { get; set; }
+        public virtual DbSet<UsersClientsLogin> UsersClientsLogins { get; set; }
+        public virtual DbSet<UsersEmployees> UsersEmployees { get; set; }
+        public virtual DbSet<UsersEmployeesLogin> UsersEmployeesLogins { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -66,119 +66,6 @@ namespace Back_Office_Web_Application.Context
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50);
-            });
-
-            modelBuilder.Entity<UsersClient>(entity =>
-            {
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
-
-                entity.Property(e => e.BirthDate).HasColumnType("date");
-
-                entity.Property(e => e.FirstName)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsFixedLength(true);
-
-                entity.Property(e => e.LastName)
-                    .HasMaxLength(50)
-                    .IsFixedLength(true);
-
-                entity.Property(e => e.Phone)
-                    .IsRequired()
-                    .HasMaxLength(11)
-                    .IsFixedLength(true);
-
-                entity.Property(e => e.SecondName)
-                    .HasMaxLength(50)
-                    .IsFixedLength(true);
-
-                entity.HasOne(d => d.IdNavigation)
-                    .WithOne(p => p.Client)
-                    .HasForeignKey<UsersClient>(d => d.Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Clients_ClientsLogin1");
-            });
-
-            modelBuilder.Entity<UsersClientsLogin>(entity =>
-            {
-                entity.HasKey(e => e.UserId);
-
-                entity.ToTable("ClientsLogin");
-
-                entity.HasIndex(e => e.Email, "IX_ClientsLogin")
-                    .IsUnique();
-
-                entity.Property(e => e.UserId).HasColumnName("UserID");
-
-                entity.Property(e => e.Email)
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .IsFixedLength(true);
-
-                entity.Property(e => e.PasswordHash)
-                    .IsRequired()
-                    .HasMaxLength(60);
-            });
-
-            modelBuilder.Entity<UsersEmployees>(entity =>
-            {
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
-
-                entity.Property(e => e.FirstName)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsFixedLength(true);
-
-                entity.Property(e => e.LastName)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsFixedLength(true);
-
-                entity.Property(e => e.Phone)
-                    .HasMaxLength(11)
-                    .IsFixedLength(true);
-
-                entity.Property(e => e.SecondName)
-                    .HasMaxLength(50)
-                    .IsFixedLength(true);
-
-                entity.HasOne(d => d.IdNavigation)
-                    .WithOne(p => p.UsersEmployees)
-                    .HasForeignKey<UsersEmployees>(d => d.Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Employees_EmployeesLogin");
-
-                entity.HasOne(d => d.RoleNavigation)
-                    .WithMany(p => p.UsersEmployees)
-                    .HasForeignKey(d => d.Role)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Employees_Roles");
-            });
-
-            modelBuilder.Entity<UsersEmployeesLogin>(entity =>
-            {
-                entity.HasKey(e => e.EmployeeId);
-
-                entity.ToTable("UsersEmployeesLogin");
-
-                entity.HasIndex(e => e.Email, "IX_UsersEmployeesLogin")
-                    .IsUnique();
-
-                entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
-
-                entity.Property(e => e.Email)
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .IsFixedLength(true);
-
-                entity.Property(e => e.HashPassword)
-                    .IsRequired()
-                    .HasMaxLength(60)
-                    .IsFixedLength(true);
             });
 
             modelBuilder.Entity<Order>(entity =>
@@ -290,8 +177,8 @@ namespace Back_Office_Web_Application.Context
 
                 entity.Property(e => e.ProductId).HasColumnName("ProductID");
 
-                entity.Property(e => e.ReceiptDate).HasColumnType("datetime")
-                    .IsRequired()
+                entity.Property(e => e.ReceiptDate)
+                    .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.SellDate).HasColumnType("datetime");
@@ -325,6 +212,121 @@ namespace Back_Office_Web_Application.Context
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
+                    .IsFixedLength(true);
+            });
+
+            modelBuilder.Entity<UsersClient>(entity =>
+            {
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("ID");
+
+                entity.Property(e => e.BirthDate).HasColumnType("date");
+
+                entity.Property(e => e.FirstName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.LastName)
+                    .HasMaxLength(50)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.Phone)
+                    .IsRequired()
+                    .HasMaxLength(11)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.SecondName)
+                    .HasMaxLength(50)
+                    .IsFixedLength(true);
+
+                entity.HasOne(d => d.IdNavigation)
+                    .WithOne(p => p.UsersClient)
+                    .HasForeignKey<UsersClient>(d => d.Id)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Clients_ClientsLogin1");
+            });
+
+            modelBuilder.Entity<UsersClientsLogin>(entity =>
+            {
+                entity.HasKey(e => e.UserId)
+                    .HasName("PK_ClientsLogin");
+
+                entity.ToTable("UsersClientsLogin");
+
+                entity.HasIndex(e => e.Email, "IX_ClientsLogin")
+                    .IsUnique();
+
+                entity.Property(e => e.UserId).HasColumnName("UserID");
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.PasswordHash)
+                    .IsRequired()
+                    .HasMaxLength(60);
+            });
+
+            modelBuilder.Entity<UsersEmployees>(entity =>
+            {
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("ID");
+
+                entity.Property(e => e.FirstName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.LastName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.Phone)
+                    .HasMaxLength(11)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.SecondName)
+                    .HasMaxLength(50)
+                    .IsFixedLength(true);
+
+                entity.HasOne(d => d.IdNavigation)
+                    .WithOne(p => p.UsersEmployees)
+                    .HasForeignKey<UsersEmployees>(d => d.Id)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Employees_EmployeesLogin");
+
+                entity.HasOne(d => d.RoleNavigation)
+                    .WithMany(p => p.UsersEmployees)
+                    .HasForeignKey(d => d.Role)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Employees_Roles");
+            });
+
+            modelBuilder.Entity<UsersEmployeesLogin>(entity =>
+            {
+                entity.HasKey(e => e.EmployeeId)
+                    .HasName("PK_EmployeesLogin");
+
+                entity.ToTable("UsersEmployeesLogin");
+
+                entity.HasIndex(e => e.Email, "IX_EmployeesLogin")
+                    .IsUnique();
+
+                entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.HashPassword)
+                    .IsRequired()
+                    .HasMaxLength(60)
                     .IsFixedLength(true);
             });
 

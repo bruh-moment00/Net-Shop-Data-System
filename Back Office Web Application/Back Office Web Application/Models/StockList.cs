@@ -11,7 +11,7 @@ namespace Back_Office_Web_Application.Models
         public int ProductId { get; set; }
         public int StatusId { get; set; }
         public DateTime ReceiptDate { get; set; }
-        public DateTime SellDate { get; set; }
+        public DateTime? SellDate { get; set; }
         public int? OrderId { get; set; }
 
         public virtual Order Order { get; set; }
