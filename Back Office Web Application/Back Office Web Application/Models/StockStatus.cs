@@ -9,12 +9,12 @@ namespace Back_Office_Web_Application.Models
     {
         public StockStatus()
         {
-            Stocks = new HashSet<Stock>();
+            Stocks = new HashSet<StockList>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public virtual ICollection<Stock> Stocks { get; set; }
+        public virtual ICollection<StockList> Stocks { get; set; }
     }
 }

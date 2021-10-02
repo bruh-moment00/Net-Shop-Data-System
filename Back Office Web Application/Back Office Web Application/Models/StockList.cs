@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Back_Office_Web_Application.Models
 {
-    public partial class Stock
+    public partial class StockList
     {
         public int Id { get; set; }
         public int ProductId { get; set; }

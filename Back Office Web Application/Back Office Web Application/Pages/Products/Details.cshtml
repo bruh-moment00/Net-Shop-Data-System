@@ -2,29 +2,28 @@
 @model Back_Office_Web_Application.Pages.Products.DetailsModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = @Html.DisplayFor(model => model.Product.Name);
 }
 
-<h1>Details</h1>
+<h1>Подробно</h1>
 
 <div>
-    <h4>Product</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Product.Name)
+            Наименование
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Product.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Product.Price)
+            Цена
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Product.Price)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Product.Description)
+            Описание
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Product.Description)
@@ -36,13 +35,13 @@
             @Html.DisplayFor(model => model.Product.SpecsString)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Product.Brand)
+            Производитель
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Product.Brand.Brand1)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Product.Category)
+            Категория
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Product.Category.Name)
@@ -50,6 +49,6 @@
     </dl>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Product.Id">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    <a class="btn btn-primary" asp-page="./Edit" asp-route-id="@Model.Product.Id">Редактировать</a> |
+    <a asp-page="./Index">Назад</a>
 </div>

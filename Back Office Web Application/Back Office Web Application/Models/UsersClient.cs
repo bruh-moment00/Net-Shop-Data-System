@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace Back_Office_Web_Application.Models
 {
-    public partial class Employee
+    public partial class UsersClient
     {
-        public Employee()
+        public UsersClient()
         {
             Orders = new HashSet<Order>();
         }
@@ -16,11 +16,11 @@ namespace Back_Office_Web_Application.Models
         public string FirstName { get; set; }
         public string SecondName { get; set; }
         public string LastName { get; set; }
+        public bool? Gender { get; set; }
         public string Phone { get; set; }
-        public int Role { get; set; }
+        public DateTime BirthDate { get; set; }
 
-        public virtual EmployeesLogin IdNavigation { get; set; }
-        public virtual Role RoleNavigation { get; set; }
+        public virtual UsersClientsLogin IdNavigation { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
     }
 }

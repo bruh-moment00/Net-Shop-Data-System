@@ -5,12 +5,12 @@ using System.Collections.Generic;
 
 namespace Back_Office_Web_Application.Models
 {
-    public partial class ClientsLogin
+    public partial class UsersClientsLogin
     {
         public int UserId { get; set; }
         public string Email { get; set; }
         public string PasswordHash { get; set; }
 
-        public virtual Client Client { get; set; }
+        public virtual UsersClient Client { get; set; }
     }
 }

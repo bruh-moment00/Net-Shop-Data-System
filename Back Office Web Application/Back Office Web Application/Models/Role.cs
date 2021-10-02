@@ -9,12 +9,12 @@ namespace Back_Office_Web_Application.Models
     {
         public Role()
         {
-            Employees = new HashSet<Employee>();
+            UsersEmployees = new HashSet<UsersEmployees>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public virtual ICollection<Employee> Employees { get; set; }
+        public virtual ICollection<UsersEmployees> UsersEmployees { get; set; }
     }
 }

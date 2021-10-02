@@ -10,7 +10,7 @@ namespace Back_Office_Web_Application.Models
         public Product()
         {
             OrderedProducts = new HashSet<OrderedProduct>();
-            Stocks = new HashSet<Stock>();
+            Stocks = new HashSet<StockList>();
         }
 
         public int Id { get; set; }
@@ -24,6 +24,6 @@ namespace Back_Office_Web_Application.Models
         public virtual Brand Brand { get; set; }
         public virtual Category Category { get; set; }
         public virtual ICollection<OrderedProduct> OrderedProducts { get; set; }
-        public virtual ICollection<Stock> Stocks { get; set; }
+        public virtual ICollection<StockList> Stocks { get; set; }
     }
 }

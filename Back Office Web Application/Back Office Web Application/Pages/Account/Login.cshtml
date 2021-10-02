@@ -1,0 +1,58 @@
+﻿@page
+@model Back_Office_Web_Application.Pages.Authorization.LoginModel
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Вход - Офис Интернет-Магазина</title>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" />
+	<link rel="stylesheet" href="~/css/customStyle.css" />
+</head>
+<body>
+	<div class="container border" style="padding:20px">
+		<form method="post">
+			<div class="text-danger" asp-validation-summary="ModelOnly"></div>
+			<div class="form-group row">
+				<div class="col-3">
+					<label asp-for="LoginData.Email">Электронная почта</label>
+				</div>
+				<div class="col-5">
+					<input type="email" asp-for="LoginData.Email" class="form-control" />
+				</div>
+				<span class="text-danger" asp-validation-for="LoginData.Email"></span>
+			</div>
+			<div class="form-group row">
+				<div class="col-3">
+					<label asp-for="LoginData.Password">Пароль</label>
+				</div>
+				<div class="col-5">
+					<input type="password" asp-for="LoginData.Password" class="form-control" />
+				</div>
+				<span class="text-danger" asp-validation-for="LoginData.Password"></span>
+			</div>
+			<div class="form-group row">
+				<div class="col-2">
+					<input type="submit" class="btn btn-primary" value="Войти" />
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<footer class="border-top footer text-muted">
+		<div class="container">
+			&copy; 2021 - Back Office Web Application - <a href="mailto:nikitabelokon@mail.ru">nikitabelokon@mail.ru</a>
+		</div>
+	</footer>
+
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+
+</body>
+</html>

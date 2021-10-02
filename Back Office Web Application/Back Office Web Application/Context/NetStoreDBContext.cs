@@ -20,16 +20,16 @@ namespace Back_Office_Web_Application.Context
 
         public virtual DbSet<Brand> Brands { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
-        public virtual DbSet<Client> Clients { get; set; }
-        public virtual DbSet<ClientsLogin> ClientsLogins { get; set; }
-        public virtual DbSet<Employee> Employees { get; set; }
-        public virtual DbSet<EmployeesLogin> EmployeesLogins { get; set; }
+        public virtual DbSet<UsersClient> UsersClients { get; set; }
+        public virtual DbSet<UsersClientsLogin> UsersClientsLogins { get; set; }
+        public virtual DbSet<UsersEmployees> UsersEmployees { get; set; }
+        public virtual DbSet<UsersEmployeesLogin> UsersEmployeesLogin { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderedProduct> OrderedProducts { get; set; }
         public virtual DbSet<OrdersStatus> OrdersStatuses { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
-        public virtual DbSet<Stock> Stocks { get; set; }
+        public virtual DbSet<StockList> Stocks { get; set; }
         public virtual DbSet<StockStatus> StockStatuses { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -68,7 +68,7 @@ namespace Back_Office_Web_Application.Context
                     .HasMaxLength(50);
             });
 
-            modelBuilder.Entity<Client>(entity =>
+            modelBuilder.Entity<UsersClient>(entity =>
             {
                 entity.Property(e => e.Id)
                     .ValueGeneratedNever()
@@ -96,12 +96,12 @@ namespace Back_Office_Web_Application.Context
 
                 entity.HasOne(d => d.IdNavigation)
                     .WithOne(p => p.Client)
-                    .HasForeignKey<Client>(d => d.Id)
+                    .HasForeignKey<UsersClient>(d => d.Id)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Clients_ClientsLogin1");
             });
 
-            modelBuilder.Entity<ClientsLogin>(entity =>
+            modelBuilder.Entity<UsersClientsLogin>(entity =>
             {
                 entity.HasKey(e => e.UserId);
 
@@ -122,7 +122,7 @@ namespace Back_Office_Web_Application.Context
                     .HasMaxLength(60);
             });
 
-            modelBuilder.Entity<Employee>(entity =>
+            modelBuilder.Entity<UsersEmployees>(entity =>
             {
                 entity.Property(e => e.Id)
                     .ValueGeneratedNever()
@@ -139,7 +139,7 @@ namespace Back_Office_Web_Application.Context
                     .IsFixedLength(true);
 
                 entity.Property(e => e.Phone)
-                    .HasMaxLength(10)
+                    .HasMaxLength(11)
                     .IsFixedLength(true);
 
                 entity.Property(e => e.SecondName)
@@ -147,25 +147,25 @@ namespace Back_Office_Web_Application.Context
                     .IsFixedLength(true);
 
                 entity.HasOne(d => d.IdNavigation)
-                    .WithOne(p => p.Employee)
-                    .HasForeignKey<Employee>(d => d.Id)
+                    .WithOne(p => p.UsersEmployees)
+                    .HasForeignKey<UsersEmployees>(d => d.Id)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Employees_EmployeesLogin");
 
                 entity.HasOne(d => d.RoleNavigation)
-                    .WithMany(p => p.Employees)
+                    .WithMany(p => p.UsersEmployees)
                     .HasForeignKey(d => d.Role)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Employees_Roles");
             });
 
-            modelBuilder.Entity<EmployeesLogin>(entity =>
+            modelBuilder.Entity<UsersEmployeesLogin>(entity =>
             {
                 entity.HasKey(e => e.EmployeeId);
 
-                entity.ToTable("EmployeesLogin");
+                entity.ToTable("UsersEmployeesLogin");
 
-                entity.HasIndex(e => e.Email, "IX_EmployeesLogin")
+                entity.HasIndex(e => e.Email, "IX_UsersEmployeesLogin")
                     .IsUnique();
 
                 entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
@@ -280,7 +280,7 @@ namespace Back_Office_Web_Application.Context
                     .HasMaxLength(50);
             });
 
-            modelBuilder.Entity<Stock>(entity =>
+            modelBuilder.Entity<StockList>(entity =>
             {
                 entity.ToTable("Stock");
 

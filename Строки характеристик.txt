@@ -1,5 +1,5 @@
 SELECT * from Products
-WHERE Type = %TypeID% AND Specs Like "%screen_resolution:1080x1920;%operating_system:Android 10;%"
+WHERE Type = %TypeID% AND SpecsString Like "%screen_resolution:1080x1920;%operating_system:Android 10;%"
 
 
 Laptops

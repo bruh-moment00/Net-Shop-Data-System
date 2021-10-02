@@ -25,9 +25,18 @@ namespace Back_Office_Web_Application
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
+            services.AddAuthentication("AuthenticationCookie").AddCookie("AuthenticationCookie", options =>
+            {
+                options.Cookie.Name = "AuthenticationCookie";
+            }
+            );
+            services.AddRazorPages().AddRazorPagesOptions(config =>
+            {
+                config.Conventions.AuthorizeFolder("/Products");
+                config.Conventions.AuthorizeFolder("/Stock");
+            });
             services.AddDbContext<NetStoreDBContext>(options =>
-        options.UseSqlServer(Configuration.GetConnectionString("NetStoreDB")));
+            options.UseSqlServer(Configuration.GetConnectionString("NetStoreDB")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,11 +53,14 @@ namespace Back_Office_Web_Application
                 app.UseHsts();
             }
 
+            app.UseStatusCodePages();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
