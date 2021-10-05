@@ -328,6 +328,10 @@ namespace Back_Office_Web_Application.Context
                     .IsRequired()
                     .HasMaxLength(60)
                     .IsFixedLength(true);
+
+                entity.Property(e => e.IsActive)
+                    .IsRequired()
+                    .HasDefaultValueSql("True");
             });
 
             OnModelCreatingPartial(modelBuilder);

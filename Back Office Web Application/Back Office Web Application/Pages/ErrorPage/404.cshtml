@@ -1,0 +1,8 @@
+﻿@page
+@model Back_Office_Web_Application.Pages.ErrorPage._404Model
+@{
+	ViewData["Title"] = "Страница не существует";
+}
+<h1>Ошибка 404</h1>
+<p>Запрошенной страницы не существует, проверьте адрес:</p>
+<p>@Model.OriginalURL</p>

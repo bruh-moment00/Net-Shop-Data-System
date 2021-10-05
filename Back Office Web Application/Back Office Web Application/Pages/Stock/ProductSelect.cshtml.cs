@@ -11,35 +11,28 @@ using Back_Office_Web_Application.Models;
 
 namespace Back_Office_Web_Application.Pages.Products
 {
-    public class IndexModel : PageModel
+    public class ProductSelectModel : PageModel
     {
         private readonly Back_Office_Web_Application.Context.NetStoreDBContext _context;
-        public PaginationModel paginationModel;
-        public int PageNo { get; set; }
-        public int PageSize { get; set; }
-        public int TotalRecords { get; set; }
 
-        public IndexModel(Back_Office_Web_Application.Context.NetStoreDBContext context)
+        public ProductSelectModel(Back_Office_Web_Application.Context.NetStoreDBContext context)
         {
             _context = context;
-            
         }
 
         public IList<Product> Product { get;set; }
         [BindProperty(SupportsGet = true)]
         public string SearchString { get; set; }
 
-        public async Task OnGetAsync(int pageNo = 1, int pageSize = 5)
+        public async Task OnGetAsync()
         {
             Product = await _context.Products
                 .Include(p => p.Brand)
-                .Include(p => p.Category)
-                .ToListAsync();
+                .Include(p => p.Category).ToListAsync();
 
-            
 
-            var products = from p in _context.Products
-                           select p;
+            var products = from m in _context.Products
+                         select m;
 
             if (!string.IsNullOrEmpty(SearchString))
             {

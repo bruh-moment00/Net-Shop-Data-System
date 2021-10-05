@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Back_Office_Web_Application.Pages.Authorization
 {
-    
     public class LoginModel : PageModel
     {
         private Back_Office_Web_Application.Context.NetStoreDBContext _context;

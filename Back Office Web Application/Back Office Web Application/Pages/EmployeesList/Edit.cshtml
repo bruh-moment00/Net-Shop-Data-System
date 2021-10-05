@@ -1,0 +1,54 @@
+﻿@page
+@model Back_Office_Web_Application.Pages.EmployeesList.EditModel
+
+@{
+    ViewData["Title"] = "Редактирование";
+}
+
+<h1>Редактирование</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="UsersEmployees.Id" />
+			<div class="form-group">
+				<label asp-for="UsersEmployees.LastName" class="control-label">Фамилия</label>
+				<input asp-for="UsersEmployees.LastName" class="form-control" />
+				<span asp-validation-for="UsersEmployees.LastName" class="text-danger"></span>
+			</div>
+            <div class="form-group">
+                <label asp-for="UsersEmployees.FirstName" class="control-label">Имя</label>
+                <input asp-for="UsersEmployees.FirstName" class="form-control" />
+                <span asp-validation-for="UsersEmployees.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UsersEmployees.SecondName" class="control-label">Отчество</label>
+                <input asp-for="UsersEmployees.SecondName" class="form-control" />
+                <span asp-validation-for="UsersEmployees.SecondName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UsersEmployees.Phone" class="control-label"></label>
+                <input asp-for="UsersEmployees.Phone" class="form-control" />
+                <span asp-validation-for="UsersEmployees.Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UsersEmployees.Role" class="control-label"></label>
+                <select asp-for="UsersEmployees.Role" class="form-control" asp-items="ViewBag.Role"></select>
+                <span asp-validation-for="UsersEmployees.Role" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+	<a href="#" onclick="history.back()">Назад</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

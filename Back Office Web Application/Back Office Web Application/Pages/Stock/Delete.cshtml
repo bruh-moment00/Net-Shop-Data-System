@@ -5,11 +5,10 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
+<h1>Удаление</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Вы уверены что хотите удалить данный товар из склада?</h3>
 <div>
-    <h4>Stock</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -46,7 +45,7 @@
     
     <form method="post">
         <input type="hidden" asp-for="Stock.Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <input type="submit" value="Удалить" class="btn btn-danger" /> |
         <a href="#" onclick="history.back()">Назад</a>
     </form>
 </div>

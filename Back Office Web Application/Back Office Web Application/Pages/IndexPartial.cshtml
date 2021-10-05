@@ -1,0 +1,41 @@
+﻿@using System.Security.Claims;
+
+<div class="row">
+	<div class="col-xs-12 col-sm-12 col-md-4">
+		<a asp-page="Products/Index" class="block-link">
+			<div class="floating-block transition">
+				<h4>Список товаров</h4>
+				<p>Добавление, редактирование и удаление товаров</p>
+			</div>
+		</a>
+	</div>
+	<div class="col-xs-12 col-sm-12 col-md-4">
+		<a asp-page="Stock/Index" class="block-link">
+			<div class="floating-block transition">
+				<h4>Склад</h4>
+				<p>Просмотр и добавление списка товаров на складе</p>
+			</div>
+		</a>
+	</div>
+	<div class="col-xs-12 col-sm-12 col-md-4">
+		<a class="block-link">
+			<div class="floating-block transition">
+				<h4>Обработка заказов</h4>
+				<p>Работа с заказами, ожидающих обработки</p>
+			</div>
+		</a>
+	</div>
+</div>
+<div class="row">
+	@if (User.IsInRole("Администратор"))
+	{
+		<div class="col-xs-12 col-sm-12 col-md-4">
+			<a asp-page="EmployeesList/Index" class="block-link">
+				<div class="floating-block transition">
+					<h4>Список сотрудников</h4>
+					<p>Просмотр списка сотрудников, регистрация или удаление профилей</p>
+				</div>
+			</a>
+		</div>
+	}
+</div>

@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Back_Office_Web_Application
@@ -28,12 +29,18 @@ namespace Back_Office_Web_Application
             services.AddAuthentication("AuthenticationCookie").AddCookie("AuthenticationCookie", options =>
             {
                 options.Cookie.Name = "AuthenticationCookie";
-            }
-            );
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("IsAdmin", policy => policy.RequireClaim(ClaimTypes.Role, "Администратор"));
+            });
+
             services.AddRazorPages().AddRazorPagesOptions(config =>
             {
                 config.Conventions.AuthorizeFolder("/Products");
                 config.Conventions.AuthorizeFolder("/Stock");
+                config.Conventions.AuthorizeFolder("/EmployeesList", "IsAdmin");
             });
             services.AddDbContext<NetStoreDBContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("NetStoreDB")));
@@ -53,7 +60,7 @@ namespace Back_Office_Web_Application
                 app.UseHsts();
             }
 
-            app.UseStatusCodePages();
+            app.UseStatusCodePagesWithReExecute("/ErrorPage/{0}");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

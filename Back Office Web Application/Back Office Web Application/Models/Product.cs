@@ -20,6 +20,7 @@ namespace Back_Office_Web_Application.Models
         public int Price { get; set; }
         public string Description { get; set; }
         public string SpecsString { get; set; }
+        public string ImagePath { get; set; }
 
         public virtual Brand Brand { get; set; }
         public virtual Category Category { get; set; }

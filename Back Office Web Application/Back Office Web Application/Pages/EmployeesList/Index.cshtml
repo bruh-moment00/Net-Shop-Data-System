@@ -1,0 +1,66 @@
+﻿@page
+@model Back_Office_Web_Application.Pages.EmployeesList.IndexModel
+
+@{
+    ViewData["Title"] = "Список сотрудников";
+}
+
+<h1>Список сотрудников</h1>
+
+<p>
+	<a class="btn btn-outline-primary" value="Регистрация" asp-page="Create">Зарегистрировать нового сотрудника</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+			<th>
+				Фамилия
+			</th>
+            <th>
+                Имя
+            </th>
+            <th>
+                Отчество
+            </th>
+            <th>
+                Номер телефона
+            </th>
+            <th>
+                Электронная почта
+            </th>
+            <th>
+                Роль
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.UsersEmployees) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SecondName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdNavigation.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoleNavigation.Name)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

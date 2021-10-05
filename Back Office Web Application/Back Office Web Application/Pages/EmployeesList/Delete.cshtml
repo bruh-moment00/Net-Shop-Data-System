@@ -1,0 +1,57 @@
+﻿@page
+@model Back_Office_Web_Application.Pages.EmployeesList.DeleteModel
+
+@{
+    ViewData["Title"] = "Удаление";
+}
+
+<h1>Delete</h1>
+
+<h3>Вы уверены что хотите удалить данного сотрудника? Данное действие нельзя отменить</h3>
+<div>
+    <hr />
+	<dl class="row">
+		<dt class="col-sm-2">
+			Фамилия
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.UsersEmployees.LastName)
+		</dd>
+		<dt class="col-sm-2">
+			Имя
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.UsersEmployees.FirstName)
+		</dd>
+		<dt class="col-sm-2">
+			Отчество
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.UsersEmployees.SecondName)
+		</dd>
+		<dt class="col-sm-2">
+			Номер телефона
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.UsersEmployees.Phone)
+		</dd>
+		<dt class="col-sm-2">
+			Электронная почта
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.UsersEmployees.IdNavigation.Email)
+		</dd>
+		<dt class="col-sm-2">
+			Роль
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.UsersEmployees.RoleNavigation.Name)
+		</dd>
+	</dl>
+    
+	<form method="post">
+		<input type="hidden" asp-for="UsersEmployees.Id" />
+		<input type="submit" value="Удалить" class="btn btn-danger" /> |
+		<a href="#" onclick="history.back()">Назад</a>
+	</form>
+</div>

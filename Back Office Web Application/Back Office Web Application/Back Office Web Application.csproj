@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
+    <PackageReference Include="LazZiya.TagHelpers" Version="5.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.10">
       <PrivateAssets>all</PrivateAssets>
@@ -22,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\Products\Shared\" />
+    <Folder Include="Pages\Orders\" />
   </ItemGroup>
 
 </Project>

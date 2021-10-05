@@ -1,0 +1,67 @@
+﻿@page
+@model Back_Office_Web_Application.Pages.EmployeesList.CreateModel
+
+@{
+    ViewData["Title"] = "Добавление";
+}
+
+<h1>Добавление нового сотрудника</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+		<form method="post">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
+				<label asp-for="UsersEmployeesLogin.Email" class="control-label">Электронная почта</label>
+				<input type="email" asp-for="UsersEmployeesLogin.Email" class="form-control" />
+				<span asp-validation-for="UsersEmployeesLogin.Email" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Password" class="control-label">Пароль</label>
+				<input type="password" asp-for="Password" class="form-control" />
+				<span asp-validation-for="Password" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label>Повторите пароль</label>
+				<input type="password" asp-for="PasswordCheck" class="form-control" required/>
+				<span asp-validation-for="PasswordCheck" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="UsersEmployees.FirstName" class="control-label"></label>
+				<input asp-for="UsersEmployees.FirstName" class="form-control" />
+				<span asp-validation-for="UsersEmployees.FirstName" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="UsersEmployees.SecondName" class="control-label"></label>
+				<input asp-for="UsersEmployees.SecondName" class="form-control" />
+				<span asp-validation-for="UsersEmployees.SecondName" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="UsersEmployees.LastName" class="control-label"></label>
+				<input asp-for="UsersEmployees.LastName" class="form-control" />
+				<span asp-validation-for="UsersEmployees.LastName" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="UsersEmployees.Phone" class="control-label"></label>
+				<input asp-for="UsersEmployees.Phone" class="form-control" />
+				<span asp-validation-for="UsersEmployees.Phone" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="UsersEmployees.Role" class="control-label"></label>
+				<select asp-for="UsersEmployees.Role" class="form-control" asp-items="ViewBag.Role"></select>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Create" class="btn btn-primary" />
+			</div>
+		</form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

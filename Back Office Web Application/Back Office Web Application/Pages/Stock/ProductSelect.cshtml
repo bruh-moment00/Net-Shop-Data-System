@@ -5,7 +5,7 @@
     ViewData["Title"] = "Список товаров";
 }
 
-<h1>Список товаров</h1>
+<h1>Выбрать товар</h1>
 
     <a class="btn btn-outline-primary" value="Добавить" asp-page="Create" >Добавить</a>
 <hr />
@@ -44,43 +44,29 @@
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (var product in Model.Product)
+			@foreach (var item in Model.Product)
 			{
 				<tr>
 					<td>
-						<a asp-page="./Details" asp-route-id="@product.Id">
-							@Html.DisplayFor(modelItem => product.Name)
-							<br />
-							<img src="@Html.DisplayFor(modelItem => product.ImagePath)" height="150" />
-						</a>
-						
+						<a asp-page="./Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
 					</td>
 					<td>
-						@Html.DisplayFor(modelItem => product.Price)
+						@Html.DisplayFor(modelItem => item.Price)
 					</td>
 					<td>
-						@Html.DisplayFor(modelItem => product.Description)
+						@Html.DisplayFor(modelItem => item.Description)
 					</td>
 					<td>
-						@Html.DisplayFor(modelItem => product.Brand.Brand1)
+						@Html.DisplayFor(modelItem => item.Brand.Brand1)
 					</td>
 					<td>
-						@Html.DisplayFor(modelItem => product.Category.Name)
+						@Html.DisplayFor(modelItem => item.Category.Name)
 					</td>
 					<td>
-						<a asp-page="./Edit" asp-route-id="@product.Id">Изменить</a> |
-						<a asp-page="./Details" asp-route-id="@product.Id">Подробно</a> |
-						<a asp-page="./Delete" asp-route-id="@product.Id">Удалить</a>
+						<a asp-page="./Details" asp-route-id="@item.Id">Выбрать</a> |
 					</td>
 				</tr>
 			}
 		</tbody>
 	</table>
-	@*<paging class="pagination" 
-			page-no="@Model.PageNo" 
-			page-size="@Model.PageSize" 
-			total-records="@Model.TotalRecords" 
-			show-total-pages="false"
-			show-total-records="false">
-	</paging>*@
 </div>
