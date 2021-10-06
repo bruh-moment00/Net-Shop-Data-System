@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Back_Office_Web_Application.Models
+namespace Back_Office_Web_Application.Models.Pagination
 {
-    public class PaginationModel
+    public class PaginationModel<T>
     {
-        [Microsoft.AspNetCore.Mvc.BindProperty(SupportsGet = true)]
-        public int CurrentPage { get; set; } = 1;
+        public int CurrentPage { get; set; }
         public int Count { get; set; }
-        public int PageSize { get; set; } = 5;
-
-        public int TotalPages => (int)Math.Ceiling(decimal.Divide(Count, PageSize));
+        public int PageSize { get; set; }
+        public IQueryable<T> PaginatedList { get; set; }
         
-        public PaginationModel(int currentPage, int count, int pageSize)
+        public PaginationModel(IQueryable<T> queryableList, int currentPage, int pageSize)
         {
+            Count = queryableList.Count();
             CurrentPage = currentPage;
-            Count = count;
             PageSize = pageSize;
+
+            PaginatedList = queryableList.ReturnPaginatedResult(CurrentPage, PageSize);
         }
     }
 }

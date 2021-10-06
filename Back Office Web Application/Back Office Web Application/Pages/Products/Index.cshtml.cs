@@ -8,16 +8,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Back_Office_Web_Application.Context;
 using Back_Office_Web_Application.Models;
+using Back_Office_Web_Application.Models.Pagination;
 
 namespace Back_Office_Web_Application.Pages.Products
 {
     public class IndexModel : PageModel
     {
         private readonly Back_Office_Web_Application.Context.NetStoreDBContext _context;
-        public PaginationModel paginationModel;
-        public int PageNo { get; set; }
-        public int PageSize { get; set; }
-        public int TotalRecords { get; set; }
+        public PaginationModel<Product> productsPagination;
 
         public IndexModel(Back_Office_Web_Application.Context.NetStoreDBContext context)
         {
@@ -29,24 +27,24 @@ namespace Back_Office_Web_Application.Pages.Products
         [BindProperty(SupportsGet = true)]
         public string SearchString { get; set; }
 
-        public async Task OnGetAsync(int pageNo = 1, int pageSize = 5)
+        public async Task OnGetAsync(int p = 1, int s = 5)//TagHelper заставляет использовать именно такие переменные
         {
             Product = await _context.Products
                 .Include(p => p.Brand)
                 .Include(p => p.Category)
                 .ToListAsync();
 
-            
-
-            var products = from p in _context.Products
-                           select p;
+            var products = from prod in _context.Products
+                           select prod;
 
             if (!string.IsNullOrEmpty(SearchString))
             {
                 products = products.Where(s => s.Name.Contains(SearchString));
             }
 
-            Product = await products.ToListAsync();
+            productsPagination = new PaginationModel<Product>(products, p, s);
+
+            Product = await productsPagination.PaginatedList.ToListAsync();
         }
     }
 }
