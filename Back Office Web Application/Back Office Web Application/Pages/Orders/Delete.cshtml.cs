@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Back_Office_Web_Application.Context;
 using Back_Office_Web_Application.Models;
 
-namespace Back_Office_Web_Application.Pages.EmployeesList
+namespace Back_Office_Web_Application.Pages.Orders
 {
     public class DeleteModel : PageModel
     {
@@ -20,8 +20,7 @@ namespace Back_Office_Web_Application.Pages.EmployeesList
         }
 
         [BindProperty]
-        public UsersEmployees UsersEmployees { get; set; }
-        public UsersEmployeesLogin UsersEmployeesLogin { get; set; }
+        public Order Order { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,11 +29,12 @@ namespace Back_Office_Web_Application.Pages.EmployeesList
                 return NotFound();
             }
 
-            UsersEmployees = await _context.UsersEmployees
-                .Include(u => u.IdNavigation)
-                .Include(u => u.RoleNavigation).FirstOrDefaultAsync(m => m.Id == id);
+            Order = await _context.Orders
+                .Include(o => o.Client)
+                .Include(o => o.Manager)
+                .Include(o => o.StatusNavigation).FirstOrDefaultAsync(m => m.Id == id);
 
-            if (UsersEmployees == null)
+            if (Order == null)
             {
                 return NotFound();
             }
@@ -48,11 +48,11 @@ namespace Back_Office_Web_Application.Pages.EmployeesList
                 return NotFound();
             }
 
-            UsersEmployeesLogin = await _context.UsersEmployeesLogins.FindAsync(id);
+            Order = await _context.Orders.FindAsync(id);
 
-            if (UsersEmployees != null)
+            if (Order != null)
             {
-                UsersEmployeesLogin.IsActive = false;
+                _context.Orders.Remove(Order);
                 await _context.SaveChangesAsync();
             }
 

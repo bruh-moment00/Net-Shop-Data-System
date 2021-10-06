@@ -2,7 +2,7 @@
 @model Back_Office_Web_Application.Pages.Products.EditModel
 
 @{
-    ViewData["Title"] = "Редактирование";
+	ViewData["Title"] = "Редактирование" @Html.DisplayFor(model => model.Product.Name);
 }
 
 <h1>Редактирование</h1>

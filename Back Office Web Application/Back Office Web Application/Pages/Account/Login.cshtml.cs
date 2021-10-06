@@ -35,7 +35,7 @@ namespace Back_Office_Web_Application.Pages.Authorization
                                                where user.Email == LoginData.Email
                              select user).FirstOrDefault();
 
-            if(currentUser != null)
+            if(currentUser != null && currentUser.IsActive == true)
             {
                 if (BCrypt.Net.BCrypt.Verify(LoginData.Password, currentUser.HashPassword))
                 {

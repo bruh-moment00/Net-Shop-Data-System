@@ -11,11 +11,7 @@ thead {
 	color:white;
 }
 
-/*Header dropdown*/
-nav.navbar .dropdown:hover > .dropdown-menu {
-	display: block;
-} 
-/*Floating-blocks*/
+/*Menu-blocks*/
 .floating-block {
 	background-color: #f6fbff;
 	margin: 5pt;

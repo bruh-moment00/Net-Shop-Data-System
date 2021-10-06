@@ -29,7 +29,7 @@ namespace Back_Office_Web_Application.Pages.Stock
                 return NotFound();
             }
 
-            Stock = await _context.Stocks
+            Stock = await _context._Stock
                 .Include(s => s.Order)
                 .Include(s => s.Product)
                 .Include(s => s.Status).FirstOrDefaultAsync(m => m.Id == id);
@@ -48,11 +48,11 @@ namespace Back_Office_Web_Application.Pages.Stock
                 return NotFound();
             }
 
-            Stock = await _context.Stocks.FindAsync(id);
+            Stock = await _context._Stock.FindAsync(id);
 
             if (Stock != null)
             {
-                _context.Stocks.Remove(Stock);
+                _context._Stock.Remove(Stock);
                 await _context.SaveChangesAsync();
             }
 

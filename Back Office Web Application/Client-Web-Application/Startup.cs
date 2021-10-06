@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Web_Application_For_Data_System
+namespace Client_Web_Application
 {
     public class Startup
     {

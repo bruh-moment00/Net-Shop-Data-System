@@ -2,7 +2,7 @@
 @model Back_Office_Web_Application.Pages.Stock.DetailsModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Html.DisplayFor(model => model.Stock.Product.Name) "на складе";
 }
 
 <h1>Подробно</h1>

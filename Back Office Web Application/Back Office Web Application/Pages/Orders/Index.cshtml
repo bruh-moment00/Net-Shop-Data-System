@@ -1,0 +1,57 @@
+﻿@page
+@model Back_Office_Web_Application.Pages.Orders.IndexModel
+
+@{
+    ViewData["Title"] = "Список заказов";
+}
+
+<h1>Заказы</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Order[0].UpdateDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order[0].Cost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order[0].Client)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order[0].Manager)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order[0].StatusNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Order) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdateDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Client.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Manager.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StatusNavigation.Name)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

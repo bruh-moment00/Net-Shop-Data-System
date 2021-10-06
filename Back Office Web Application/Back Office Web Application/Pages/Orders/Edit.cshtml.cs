@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Back_Office_Web_Application.Context;
 using Back_Office_Web_Application.Models;
 
-namespace Back_Office_Web_Application.Pages.Stock
+namespace Back_Office_Web_Application.Pages.Orders
 {
     public class EditModel : PageModel
     {
@@ -21,7 +21,7 @@ namespace Back_Office_Web_Application.Pages.Stock
         }
 
         [BindProperty]
-        public Models.StockList Stock { get; set; }
+        public Order Order { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,18 +30,18 @@ namespace Back_Office_Web_Application.Pages.Stock
                 return NotFound();
             }
 
-            Stock = await _context._Stock
-                .Include(s => s.Order)
-                .Include(s => s.Product)
-                .Include(s => s.Status).FirstOrDefaultAsync(m => m.Id == id);
+            Order = await _context.Orders
+                .Include(o => o.Client)
+                .Include(o => o.Manager)
+                .Include(o => o.StatusNavigation).FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Stock == null)
+            if (Order == null)
             {
                 return NotFound();
             }
-           ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Id");
-           ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name");
-           ViewData["StatusId"] = new SelectList(_context.StockStatuses, "Id", "Name");
+           ViewData["ClientId"] = new SelectList(_context.UsersClients, "Id", "FirstName");
+           ViewData["ManagerId"] = new SelectList(_context.UsersEmployees, "Id", "FirstName");
+           ViewData["Status"] = new SelectList(_context.OrdersStatuses, "Id", "Name");
             return Page();
         }
 
@@ -54,7 +54,7 @@ namespace Back_Office_Web_Application.Pages.Stock
                 return Page();
             }
 
-            _context.Attach(Stock).State = EntityState.Modified;
+            _context.Attach(Order).State = EntityState.Modified;
 
             try
             {
@@ -62,7 +62,7 @@ namespace Back_Office_Web_Application.Pages.Stock
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!StockExists(Stock.Id))
+                if (!OrderExists(Order.Id))
                 {
                     return NotFound();
                 }
@@ -75,9 +75,9 @@ namespace Back_Office_Web_Application.Pages.Stock
             return RedirectToPage("./Index");
         }
 
-        private bool StockExists(int id)
+        private bool OrderExists(int id)
         {
-            return _context._Stock.Any(e => e.Id == id);
+            return _context.Orders.Any(e => e.Id == id);
         }
     }
 }

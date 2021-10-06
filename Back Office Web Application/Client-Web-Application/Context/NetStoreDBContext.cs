@@ -1,11 +1,11 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Back_Office_Web_Application.Models;
+using Client_Web_Application.Models;
 
 #nullable disable
 
-namespace Back_Office_Web_Application.Context
+namespace Client_Web_Application.Context
 {
     public partial class NetStoreDBContext : DbContext
     {
@@ -25,11 +25,11 @@ namespace Back_Office_Web_Application.Context
         public virtual DbSet<OrdersStatus> OrdersStatuses { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
-        public virtual DbSet<StockList> _Stock { get; set; }
+        public virtual DbSet<Stock> Stocks { get; set; }
         public virtual DbSet<StockStatus> StockStatuses { get; set; }
         public virtual DbSet<UsersClient> UsersClients { get; set; }
         public virtual DbSet<UsersClientsLogin> UsersClientsLogins { get; set; }
-        public virtual DbSet<UsersEmployees> UsersEmployees { get; set; }
+        public virtual DbSet<UsersEmployee> UsersEmployees { get; set; }
         public virtual DbSet<UsersEmployeesLogin> UsersEmployeesLogins { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -167,7 +167,7 @@ namespace Back_Office_Web_Application.Context
                     .HasMaxLength(50);
             });
 
-            modelBuilder.Entity<StockList>(entity =>
+            modelBuilder.Entity<Stock>(entity =>
             {
                 entity.ToTable("Stock");
 
@@ -268,13 +268,9 @@ namespace Back_Office_Web_Application.Context
                 entity.Property(e => e.PasswordHash)
                     .IsRequired()
                     .HasMaxLength(60);
-
-                entity.Property(e => e.ActivatedProfile)
-                    .IsRequired()
-                    .HasDefaultValueSql("false");
             });
 
-            modelBuilder.Entity<UsersEmployees>(entity =>
+            modelBuilder.Entity<UsersEmployee>(entity =>
             {
                 entity.Property(e => e.Id)
                     .ValueGeneratedNever()
@@ -299,8 +295,8 @@ namespace Back_Office_Web_Application.Context
                     .IsFixedLength(true);
 
                 entity.HasOne(d => d.IdNavigation)
-                    .WithOne(p => p.UsersEmployees)
-                    .HasForeignKey<UsersEmployees>(d => d.Id)
+                    .WithOne(p => p.UsersEmployee)
+                    .HasForeignKey<UsersEmployee>(d => d.Id)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Employees_EmployeesLogin");
 
@@ -335,7 +331,7 @@ namespace Back_Office_Web_Application.Context
 
                 entity.Property(e => e.IsActive)
                     .IsRequired()
-                    .HasDefaultValueSql("True");
+                    .HasDefaultValueSql("((1))");
             });
 
             OnModelCreatingPartial(modelBuilder);

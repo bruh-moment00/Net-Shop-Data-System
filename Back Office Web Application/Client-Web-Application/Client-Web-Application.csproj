@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>Back_Office_Web_Application</RootNamespace>
-    <UserSecretsId>3aa2a4ad-3a87-4219-aec0-414eb18c484e</UserSecretsId>
+    <RootNamespace>Client_Web_Application</RootNamespace>
+    <UserSecretsId>a8aed4a8-58ea-40f6-936c-94d140a5f762</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

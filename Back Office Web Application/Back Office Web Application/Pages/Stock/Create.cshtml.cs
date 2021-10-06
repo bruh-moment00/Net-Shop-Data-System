@@ -38,7 +38,7 @@ namespace Back_Office_Web_Application.Pages.Stock
                 return Page();
             }
 
-            _context.Stocks.Add(Stock);
+            _context._Stock.Add(Stock);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

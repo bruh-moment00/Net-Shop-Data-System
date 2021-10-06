@@ -15,7 +15,7 @@ namespace Back_Office_Web_Application.Pages.Products
     public class IndexModel : PageModel
     {
         private readonly Back_Office_Web_Application.Context.NetStoreDBContext _context;
-        public PaginationModel<Product> productsPagination;
+        public PaginationModel<Product> pagination;
 
         public IndexModel(Back_Office_Web_Application.Context.NetStoreDBContext context)
         {
@@ -27,7 +27,7 @@ namespace Back_Office_Web_Application.Pages.Products
         [BindProperty(SupportsGet = true)]
         public string SearchString { get; set; }
 
-        public async Task OnGetAsync(int p = 1, int s = 5)//TagHelper заставляет использовать именно такие переменные
+        public async Task OnGetAsync(int p = 1, int s = 10)//TagHelper заставляет использовать именно такие переменные
         {
             Product = await _context.Products
                 .Include(p => p.Brand)
@@ -39,12 +39,16 @@ namespace Back_Office_Web_Application.Pages.Products
 
             if (!string.IsNullOrEmpty(SearchString))
             {
-                products = products.Where(s => s.Name.Contains(SearchString));
+                products = from product in products
+                           where product.Name.Contains(SearchString) ||
+                           product.Category.Name.Contains(SearchString) ||
+                           product.Brand.Brand1.Contains(SearchString)
+                           select product;
             }
 
-            productsPagination = new PaginationModel<Product>(products, p, s);
+            pagination = new PaginationModel<Product>(products, p, s);
 
-            Product = await productsPagination.PaginatedList.ToListAsync();
+            Product = await pagination.PaginatedList.ToListAsync();
         }
     }
 }

@@ -2,59 +2,81 @@
 @model Back_Office_Web_Application.Pages.Stock.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Склад";
 }
 
-<h1>Index</h1>
+<h1>Склад</h1>
 
 <p>
 	<a class="btn btn-outline-primary" value="Добавить" asp-page="Create">Добавить</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Дата прибытия
-            </th>
-            <th>
-                Дата продажи
-            </th>
-            <th>
-                Заказ
-            </th>
-            <th>
-                Товар
-            </th>
-            <th>
-                Статус
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Stock) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReceiptDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SellDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Order.Id)
-            </td>
-            <td>
-				<a asp-page="/Products/Details" asp-route-id="@item.Product.Id">@Html.DisplayFor(modelItem => item.Product.Name)</a>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status.Name)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Изменить</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Подробно</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Удалить</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+<div class="row">
+	<form class="form-inline">
+		<div class="form-group mx-sm-3 mb-2">
+			<input type="text" class="form-control" placeholder="Поиск..." asp-for="SearchString" />
+		</div>
+		<input type="submit" value="Поиск" class="btn btn-outline-success mb-2" />
+	</form>
+
+</div>
+
+<div class="row">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>
+					Дата прибытия
+				</th>
+				<th>
+					Дата продажи
+				</th>
+				<th>
+					Заказ
+				</th>
+				<th>
+					Товар
+				</th>
+				<th>
+					Статус
+				</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model.Stock)
+			{
+				<tr>
+					<td>
+						@Html.DisplayFor(modelItem => item.ReceiptDate)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.SellDate)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Order.Id)
+					</td>
+					<td>
+						<a asp-page="/Products/Details" asp-route-id="@item.Product.Id">@Html.DisplayFor(modelItem => item.Product.Name)</a>
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Status.Name)
+					</td>
+					<td>
+						<a asp-page="./Edit" asp-route-id="@item.Id">Изменить</a> |
+						<a asp-page="./Details" asp-route-id="@item.Id">Подробно</a> |
+						<a asp-page="./Delete" asp-route-id="@item.Id">Удалить</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+	<paging class="pagination"
+			page-no="@Model.pagination.CurrentPage"
+			page-size="@Model.pagination.PageSize"
+			total-records="@Model.pagination.Count"
+			show-total-pages="false"
+			show-total-records="false">
+	</paging>
+</div>
+
