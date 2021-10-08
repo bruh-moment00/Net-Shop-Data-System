@@ -1,0 +1,24 @@
+﻿@page
+@model Back_Office_Web_Application.Pages.Products.SelectCategoryModel
+
+@{
+	ViewData["Title"] = "Категории товаров";
+}
+
+<h1>Выберите категорию</h1>
+
+
+@foreach (var category in Model.Categories)
+{
+	<div class="row">
+		<a asp-page="">
+			<div class="col-12 floating-block transition">
+				<h5>@Html.DisplayFor(modelItem => category.Name)</h5>
+			</div>
+		</a>
+	</div>
+}
+@*TODO - Допилить*@
+		
+	
+

@@ -7,12 +7,15 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Back_Office_Web_Application.Context;
 using Back_Office_Web_Application.Models;
+using Back_Office_Web_Application.Models.SpecsMarkup;
 
 namespace Back_Office_Web_Application.Pages.Products
 {
     public class DetailsModel : PageModel
     {
         private readonly Back_Office_Web_Application.Context.NetStoreDBContext _context;
+
+        public string specsString;
 
         public DetailsModel(Back_Office_Web_Application.Context.NetStoreDBContext context)
         {
@@ -36,6 +39,9 @@ namespace Back_Office_Web_Application.Pages.Products
             {
                 return NotFound();
             }
+
+            specsString = Product.SpecsString.ReturnMarkedSpecs();
+
             return Page();
         }
     }

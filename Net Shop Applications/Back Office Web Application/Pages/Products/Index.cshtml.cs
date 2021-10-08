@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Back_Office_Web_Application.Context;
 using Back_Office_Web_Application.Models;
 using Back_Office_Web_Application.Models.Pagination;
+using Back_Office_Web_Application.Models.SortAndFilter;
 
 namespace Back_Office_Web_Application.Pages.Products
 {
@@ -26,6 +27,10 @@ namespace Back_Office_Web_Application.Pages.Products
         public IList<Product> Product { get;set; }
         [BindProperty(SupportsGet = true)]
         public string SearchString { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string SortMethod { get; set; } = "up";
+        [BindProperty(SupportsGet = true)]
+        public string SortOrder { get; set; } = "id";
 
         public async Task OnGetAsync(int p = 1, int s = 10)//TagHelper заставляет использовать именно такие переменные
         {
@@ -41,10 +46,12 @@ namespace Back_Office_Web_Application.Pages.Products
             {
                 products = from product in products
                            where product.Name.Contains(SearchString) ||
-                           product.Category.Name.Contains(SearchString) ||
                            product.Brand.Brand1.Contains(SearchString)
                            select product;
             }
+
+            if (SortMethod == "down") products = products.SortDownBy(SortOrder);
+            else products = products.SortUpBy(SortOrder);
 
             pagination = new PaginationModel<Product>(products, p, s);
 
