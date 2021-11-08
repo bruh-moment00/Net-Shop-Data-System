@@ -1,0 +1,54 @@
+﻿body {
+  background: #eaf5fe;
+}
+
+table {
+  background-color: #ffffff;
+}
+
+thead {
+  background-color: #4397d8;
+  color: white;
+}
+
+/*Menu-blocks*/
+.floating-block {
+  background-color: #f6fbff;
+  margin: 5pt;
+  border: 1px solid #0086ee;
+  padding: 20px;
+  box-shadow: 1pt 1pt 2pt gray;
+}
+
+.floating-block h4 {
+  text-align: center;
+  color: #141414;
+}
+
+.floating-block:hover {
+  background-color: #e0e9ee;
+  border: 1px solid #0a5793;
+}
+
+.transition {
+  transition: 0.5s;
+}
+
+.block-link p {
+  color: #191919;
+}
+.block-link a:hover,
+a:link,
+a:active {
+  text-decoration: none;
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content-wrap {
+  flex: 1;
+}
