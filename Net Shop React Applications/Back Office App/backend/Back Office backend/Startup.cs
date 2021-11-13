@@ -37,6 +37,12 @@ namespace Back_Office_backend
 
             services.AddDbContext<NetStoreDBContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("NetStoreDB")));
+            services.AddCors(options =>
+                 options.AddPolicy("CorsPolicy", builder =>
+                 builder
+                 .AllowAnyMethod()
+                 .AllowAnyHeader()
+                 .WithOrigins(Configuration["Frontend"])));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,7 +58,7 @@ namespace Back_Office_backend
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseCors("CorsPolicy");
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

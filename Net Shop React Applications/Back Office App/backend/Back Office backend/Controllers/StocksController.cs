@@ -23,16 +23,54 @@ namespace Back_Office_backend.Controllers
 
         // GET: api/Stocks
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Stock>>> GetStocks()
+        public async Task<ActionResult<IEnumerable<object>>> GetStockList(string search, int pageNumber = 1, int pageSize = 10)
         {
-            return await _context.Stocks.ToListAsync();
+            if(search != null)
+            {
+                return await (from unit in _context.Stocks
+                              join product in _context.Products on unit.ProductId equals product.Id
+                              join status in _context.StockStatuses on unit.StatusId equals status.Id
+                              join order in _context.StockStatuses on unit.OrderId equals order.Id
+                              where product.Name.Contains(search) || product.Brand.Brand1.Contains(search) || unit.OrderId.ToString().Contains(search)
+                              select new 
+                              {
+                                  ID = unit.Id,
+                                  ProductName = product.Name,
+                                  Status = status.Name,
+                                  unit.ReceiptDate,
+                                  unit.SellDate,
+                                  OrderId = order.Id
+                              }).ReturnPaginatedResult(pageNumber, pageSize).ToListAsync();
+            }
+
+            return await (from unit in _context.Stocks
+                          join product in _context.Products on unit.ProductId equals product.Id
+                          join status in _context.StockStatuses on unit.StatusId equals status.Id
+                          join order in _context.StockStatuses on unit.OrderId equals order.Id
+                          select new
+                          {
+                              ID = unit.Id,
+                              ProductName = product.Name,
+                              Status = status.Name,
+                              unit.ReceiptDate,
+                              unit.SellDate,
+                              OrderId = order.Id
+                          }).ReturnPaginatedResult(pageNumber, pageSize).ToListAsync();
         }
 
         // GET: api/Stocks/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Stock>> GetStock(int id)
+        public async Task<ActionResult<object>> GetStock(int id)
         {
-            var stock = await _context.Stocks.FindAsync(id);
+            var stock = await _context.Stocks.Select(s => new 
+            { 
+                ID = s.Id,
+                Product = s.Product,
+                Status = s.Status,
+                s.ReceiptDate,
+                s.SellDate,
+                Order = s.Order
+            }).Where(s => s.ID == id).FirstOrDefaultAsync();
 
             if (stock == null)
             {

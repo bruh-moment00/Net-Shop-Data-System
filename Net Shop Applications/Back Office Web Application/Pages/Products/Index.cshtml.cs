@@ -24,11 +24,14 @@ namespace Back_Office_Web_Application.Pages.Products
             
         }
 
-        public IList<Product> Product { get;set; }
+        public IList<Product> Product { get; set; }
+
         [BindProperty(SupportsGet = true)]
         public string SearchString { get; set; }
+
         [BindProperty(SupportsGet = true)]
         public string SortMethod { get; set; } = "up";
+
         [BindProperty(SupportsGet = true)]
         public string SortOrder { get; set; } = "id";
 

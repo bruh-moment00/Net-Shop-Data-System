@@ -23,16 +23,53 @@ namespace Back_Office_backend.Controllers
 
         // GET: api/Orders
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
+        public async Task<ActionResult<IEnumerable<object>>> GetOrders(string search, int pageNumber = 1, int pageSize = 10)
         {
-            return await _context.Orders.ToListAsync();
+            if(search != null)
+            {
+                return await (from order in _context.Orders
+                              join client in _context.UsersClients on order.ClientId equals client.Id
+                              join status in _context.OrdersStatuses on order.Status equals status.Id
+                              join manager in _context.UsersEmployees on order.ManagerId equals manager.Id
+                              where order.Id.ToString().Contains(search) || status.Name.Contains(search) || manager.Id.ToString().Contains(search)
+                              select new
+                              {
+                                  ID = order.Id,
+                                  ClientName = client.LastName + " " + client.FirstName + " " + client.SecondName,
+                                  Status = status.Name,
+                                  order.UpdateDate,
+                                  order.Cost,
+                                  ManagerId = manager.Id
+                              }).ReturnPaginatedResult(pageNumber, pageSize).ToListAsync();
+            }
+            return await (from order in _context.Orders
+                          join client in _context.UsersClients on order.ClientId equals client.Id
+                          join status in _context.OrdersStatuses on order.Status equals status.Id
+                          join manager in _context.UsersEmployees on order.ManagerId equals manager.Id
+                          select new
+                          {
+                              ID = order.Id,
+                              ClientName = client.LastName + " " + client.FirstName + " " + client.SecondName
+                              Status = status.Name,
+                              order.UpdateDate,
+                              order.Cost,
+                              ManagerId = manager.Id
+                          }).ReturnPaginatedResult(pageNumber, pageSize).ToListAsync();
         }
 
         // GET: api/Orders/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Order>> GetOrder(int id)
+        public async Task<ActionResult<object>> GetOrder(int id)
         {
-            var order = await _context.Orders.FindAsync(id);
+            var order = await _context.Orders.Select(o => new
+            {
+                ID = o.Id,
+                Client = o.Client,
+                Status = o.Status,
+                o.UpdateDate,
+                o.Cost,
+                Manager = o.Manager,
+            }).Where(o => o.ID == id).FirstOrDefaultAsync();
 
             if (order == null)
             {

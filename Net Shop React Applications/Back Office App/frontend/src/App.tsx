@@ -1,14 +1,14 @@
 import React from "react";
-import "./App.css";
-import "./CustomStyle.css";
+import "./css/App.css";
+import "./css/CustomStyle.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { Header } from "./LayoutComponents/Header";
-import { Page } from "./LayoutComponents/Page";
 import { Footer } from "./LayoutComponents/Footer";
 import { MainPage } from "./Pages/MainPage";
+import { ProductPage } from "./Pages/ProductPage";
 
 function App() {
   return (
@@ -18,6 +18,7 @@ function App() {
           <Header />
           <Routes>
             <Route path="" element={<MainPage />} />
+            <Route path="Products/:productId" element={<ProductPage />} />
           </Routes>
         </div>
         <Footer />

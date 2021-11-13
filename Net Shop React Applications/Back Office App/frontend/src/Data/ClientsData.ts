@@ -1,4 +1,4 @@
-export interface Client {
+export interface ClientData {
   Id: number;
   FirstName: string;
   SecondName?: string;

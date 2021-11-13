@@ -1,10 +1,10 @@
-import { Role } from "./RolesData";
+import { RoleData } from "./RolesData";
 
-export interface Employee {
+export interface EmployeeData {
   Id: number;
   FirstName: string;
   SecondName?: string;
   LastName: string;
   Phone: string;
-  Role: Role;
+  RoleData: RoleData;
 }

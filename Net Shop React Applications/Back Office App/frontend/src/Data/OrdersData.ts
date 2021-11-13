@@ -1,12 +1,12 @@
-import { Client } from "./ClientsData";
-import { Employee } from "./EmployeesData";
-import { OrderStatus } from "./OrderStatusData";
+import { ClientData } from "./ClientsData";
+import { EmployeeData } from "./EmployeesData";
+import { OrderStatusData } from "./OrderStatusData";
 
-export interface Order {
+export interface OrderData {
   Id: number;
-  Client: Client;
-  Status: OrderStatus;
+  Client: ClientData;
+  Status: OrderStatusData;
   UpdateDate: Date;
   Cost: number;
-  Manager: Employee;
+  Manager: EmployeeData;
 }

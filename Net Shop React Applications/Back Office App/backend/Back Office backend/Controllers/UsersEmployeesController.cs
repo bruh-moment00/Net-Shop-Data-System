@@ -23,16 +23,45 @@ namespace Back_Office_backend.Controllers
 
         // GET: api/UsersEmployees
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UsersEmployee>>> GetUsersEmployees()
+        public async Task<ActionResult<IEnumerable<object>>> GetUsersEmployees(string search, int pageNumber = 1, int pageSize = 10)
         {
-            return await _context.UsersEmployees.ToListAsync();
+            if(search != null)
+            {
+                return await (from employee in _context.UsersEmployees
+                              join role in _context.Roles on employee.Role equals role.Id
+                              where employee.LastName.Contains(search) || employee.FirstName.Contains(search) || employee.SecondName.Contains(search) || employee.Phone.Contains(search)
+                              select new
+                              {
+                                  ID = employee.Id,
+                                  Name = employee.LastName + " " + employee.FirstName + " " + employee.SecondName,
+                                  employee.Phone,
+                                  Role = role.Name
+                              }).ReturnPaginatedResult(pageNumber, pageSize).ToListAsync();
+            }
+            return await (from employee in _context.UsersEmployees
+                          join role in _context.Roles on employee.Role equals role.Id
+                              select new
+                              {
+                                  ID = employee.Id,
+                                  Name = employee.LastName + " " + employee.FirstName + " " + employee.SecondName,
+                                  employee.Phone,
+                                  Role = role.Name
+                              }).ReturnPaginatedResult(pageNumber, pageSize).ToListAsync();
         }
 
         // GET: api/UsersEmployees/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<UsersEmployee>> GetUsersEmployee(int id)
+        public async Task<ActionResult<object>> GetUsersEmployee(int id)
         {
-            var usersEmployee = await _context.UsersEmployees.FindAsync(id);
+            var usersEmployee = await _context.UsersEmployees.Select(e => new
+            {
+                ID = e.Id,
+                e.FirstName,
+                e.SecondName,
+                e.LastName,
+                e.Phone,
+                e.Role
+            }).FirstOrDefaultAsync();
 
             if (usersEmployee == null)
             {

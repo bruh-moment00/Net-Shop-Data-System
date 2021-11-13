@@ -1,12 +1,21 @@
-import { Order } from "./OrdersData";
-import { Product } from "./ProductsData";
-import { StockStatus } from "./StockStatusData";
+import { OrderData } from "./OrdersData";
+import { ProductDataFull } from "./ProductsData";
+import { StockStatusData } from "./StockStatusData";
 
-export interface Stock {
+export interface StockData {
   Id: number;
-  Product: Product;
-  StatusId: StockStatus;
+  Product: ProductDataFull;
+  StatusId: StockStatusData;
   ReceiptDate: Date;
   SellDate?: Date;
-  OrderId?: Order;
+  Order?: OrderData;
+}
+
+export interface StockDataFromServer {
+  Id: number;
+  ProductName: string;
+  Status: string;
+  ReceiptDate: Date;
+  SellDate?: Date;
+  OrderId?: number;
 }

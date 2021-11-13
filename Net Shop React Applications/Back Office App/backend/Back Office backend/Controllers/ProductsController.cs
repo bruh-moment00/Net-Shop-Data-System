@@ -1,12 +1,10 @@
-﻿using System;
+﻿using Back_Office_backend.Context;
+using Back_Office_backend.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Back_Office_backend.Context;
-using Back_Office_backend.Models;
 
 namespace Back_Office_backend.Controllers
 {
@@ -23,16 +21,54 @@ namespace Back_Office_backend.Controllers
 
         // GET: api/Products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<object>>> GetProducts(string search, int pageNumber = 1, int pageSize = 10)
         {
-            return await _context.Products.ToListAsync();
+            if (search != null)
+            {
+                return await (from product in _context.Products
+                              join brand in _context.Brands on product.BrandId equals brand.Id
+                              join category in _context.Categories on product.CategoryId equals category.Id
+                              where product.Name.Contains(search) || brand.Brand1.Contains(search)
+                              select new
+                              {
+                                  ID = product.Id,
+                                  Category = category.Name,
+                                  Brand = brand.Brand1,
+                                  Name = product.Name,
+                                  Price = product.Price,
+                                  Image = product.ImagePath
+                              }).ReturnPaginatedResult(pageNumber, pageSize).ToListAsync();
+            }
+
+            return await (from product in _context.Products
+                          join brand in _context.Brands on product.BrandId equals brand.Id
+                          join category in _context.Categories on product.CategoryId equals category.Id
+                          select new
+                          {
+                              ID = product.Id,
+                              Category = category.Name,
+                              Brand = brand.Brand1,
+                              Name = product.Name,
+                              Price = product.Price,
+                              Image = product.ImagePath
+                          }).ReturnPaginatedResult(pageNumber,pageSize).ToListAsync();
         }
 
         // GET: api/Products/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProduct(int id)
+        public async Task<ActionResult<object>> GetProduct(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = await _context.Products.Select(p => new
+            {
+                ID = p.Id,
+                Category = p.Category,
+                Brand = p.Brand,
+                Name = p.Name,
+                Price = p.Price,
+                Description = p.Description,
+                Specs = p.SpecsString,
+                Image = p.ImagePath
+            }).Where(p => p.ID == id).FirstOrDefaultAsync();
 
             if (product == null)
             {

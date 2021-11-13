@@ -1,4 +1,4 @@
-export interface Brand {
+export interface BrandData {
   Id: number;
   Name: string;
 }
