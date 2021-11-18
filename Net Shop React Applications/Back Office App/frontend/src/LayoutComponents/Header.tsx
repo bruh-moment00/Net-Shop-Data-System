@@ -19,7 +19,7 @@ export const Header = () => {
               </Nav.Link>
               <NavDropdown title="Работа с базой">
                 <NavDropdown.Item>
-                  <Link to="/">Товары</Link>
+                  <Link to="/Products">Товары</Link>
                 </NavDropdown.Item>
                 <NavDropdown.Item>
                   <Link to="/">Склад</Link>

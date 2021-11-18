@@ -1,6 +1,16 @@
 import { http } from "../http";
 import { BrandData } from "./BrandsData";
 import { CategoryData } from "./CategoriesData";
+import { ListDataWithPaging } from "./ListDataWithPaging";
+
+export interface ProductData {
+  id: number;
+  category: string;
+  brand: string;
+  name: string;
+  price: number;
+  image: string;
+}
 
 export interface ProductDataFull {
   Id: number;
@@ -32,6 +42,16 @@ export interface ProductDataFullFromServer {
   image: string;
 }
 
+export interface ProductDataForPost {
+  categoryId: number;
+  brandId: number;
+  name: string;
+  price: number;
+  description: string;
+  specString: string;
+  imagePath: string;
+}
+
 export const mapProductFullFromServer = (
   product: ProductDataFullFromServer
 ): ProductDataFull => ({
@@ -51,23 +71,17 @@ export const mapProductFullFromServer = (
   Image: product.image,
 });
 
-export interface ProductDataFromServer {
-  Id: number;
-  CategoryName: string;
-  BrandName: string;
-  Name: string;
-  Price: number;
-  Description: string;
-  Specs: string;
-  ImagePath: string;
-}
-/*
-export const mapProductFromServer = (
-  product: ProductDataFromServer
-): ProductData => ({
-  ...product,
-});
-*/
+export const getProducts = async (): Promise<ProductData[] | undefined> => {
+  const result = await http<ListDataWithPaging>({
+    path: `/Products`,
+  });
+  if (result.ok || result.body) {
+    return result.body?.items;
+  } else {
+    return undefined;
+  }
+};
+
 export const getProductFull = async (
   productId: number
 ): Promise<ProductDataFull | null> => {
@@ -78,5 +92,20 @@ export const getProductFull = async (
     return mapProductFullFromServer(result.body);
   } else {
     return null;
+  }
+};
+
+export const postProduct = async (
+  product: ProductDataForPost
+): Promise<ProductDataFull | undefined> => {
+  const result = await http<ProductDataFullFromServer, ProductDataForPost>({
+    path: "Products",
+    method: "post",
+    body: product,
+  });
+  if (result.ok && result.body) {
+    return mapProductFullFromServer(result.body);
+  } else {
+    return undefined;
   }
 };

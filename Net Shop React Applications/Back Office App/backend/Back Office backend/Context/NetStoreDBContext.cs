@@ -25,7 +25,7 @@ namespace Back_Office_backend.Context
         public virtual DbSet<OrdersStatus> OrdersStatuses { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
-        public virtual DbSet<Stock> Stocks { get; set; }
+        public virtual DbSet<Stock> StockList { get; set; }
         public virtual DbSet<StockStatus> StockStatuses { get; set; }
         public virtual DbSet<UsersClient> UsersClients { get; set; }
         public virtual DbSet<UsersClientsLogin> UsersClientsLogins { get; set; }

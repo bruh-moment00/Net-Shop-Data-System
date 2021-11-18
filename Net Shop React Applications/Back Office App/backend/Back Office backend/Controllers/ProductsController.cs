@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Back_Office_backend.Paging;
+using Back_Office_backend.Models.QueryModels;
 
 namespace Back_Office_backend.Controllers
 {
@@ -21,46 +23,52 @@ namespace Back_Office_backend.Controllers
 
         // GET: api/Products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<object>>> GetProducts(string search, int pageNumber = 1, int pageSize = 10)
+        public ActionResult<PaginationModel<ProductGetManyResponse>> GetProducts(string search, int pageNumber = 1, int pageSize = 10) //TODO - сделать модели для запросов вместо object
         {
             if (search != null)
             {
-                return await (from product in _context.Products
-                              join brand in _context.Brands on product.BrandId equals brand.Id
-                              join category in _context.Categories on product.CategoryId equals category.Id
-                              where product.Name.Contains(search) || brand.Brand1.Contains(search)
-                              select new
-                              {
-                                  ID = product.Id,
-                                  Category = category.Name,
-                                  Brand = brand.Brand1,
-                                  Name = product.Name,
-                                  Price = product.Price,
-                                  Image = product.ImagePath
-                              }).ReturnPaginatedResult(pageNumber, pageSize).ToListAsync();
-            }
+                var query = from product in _context.Products
+                            join brand in _context.Brands on product.BrandId equals brand.Id
+                            join category in _context.Categories on product.CategoryId equals category.Id
+                            where product.Name.Contains(search) || brand.Brand1.Contains(search)
+                            select new ProductGetManyResponse
+                            {
+                                Id = product.Id,
+                                Category = category.Name,
+                                Brand = brand.Brand1,
+                                Name = product.Name,
+                                Price = product.Price,
+                                Image = product.ImagePath
+                            };
 
-            return await (from product in _context.Products
-                          join brand in _context.Brands on product.BrandId equals brand.Id
-                          join category in _context.Categories on product.CategoryId equals category.Id
-                          select new
-                          {
-                              ID = product.Id,
-                              Category = category.Name,
-                              Brand = brand.Brand1,
-                              Name = product.Name,
-                              Price = product.Price,
-                              Image = product.ImagePath
-                          }).ReturnPaginatedResult(pageNumber,pageSize).ToListAsync();
+                return PaginationModel<ProductGetManyResponse>.GetPagedModel(query, pageNumber, pageSize);
+            }
+            else
+            {
+                var query = from product in _context.Products
+                            join brand in _context.Brands on product.BrandId equals brand.Id
+                            join category in _context.Categories on product.CategoryId equals category.Id
+                            select new ProductGetManyResponse
+                            {
+                                Id = product.Id,
+                                Category = category.Name,
+                                Brand = brand.Brand1,
+                                Name = product.Name,
+                                Price = product.Price,
+                                Image = product.ImagePath
+                            };
+
+                return PaginationModel<ProductGetManyResponse>.GetPagedModel(query, pageNumber, pageSize); 
+            }
         }
 
         // GET: api/Products/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<object>> GetProduct(int id)
+        public async Task<ActionResult<ProductGetSingleResponse>> GetProduct(int id)
         {
-            var product = await _context.Products.Select(p => new
+            var product = await _context.Products.Select(p => new ProductGetSingleResponse
             {
-                ID = p.Id,
+                Id = p.Id,
                 Category = p.Category,
                 Brand = p.Brand,
                 Name = p.Name,
@@ -68,7 +76,7 @@ namespace Back_Office_backend.Controllers
                 Description = p.Description,
                 Specs = p.SpecsString,
                 Image = p.ImagePath
-            }).Where(p => p.ID == id).FirstOrDefaultAsync();
+            }).Where(p => p.Id == id).FirstOrDefaultAsync();
 
             if (product == null)
             {

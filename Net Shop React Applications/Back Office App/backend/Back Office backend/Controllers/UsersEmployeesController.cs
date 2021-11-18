@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Back_Office_backend.Context;
 using Back_Office_backend.Models;
+using Back_Office_backend.Models.QueryModels;
+using Back_Office_backend.Paging;
 
 namespace Back_Office_backend.Controllers
 {
@@ -23,44 +25,49 @@ namespace Back_Office_backend.Controllers
 
         // GET: api/UsersEmployees
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<object>>> GetUsersEmployees(string search, int pageNumber = 1, int pageSize = 10)
+        public ActionResult<PaginationModel<EmployeeGetManyResponse>> GetUsersEmployees(string search, int pageNumber = 1, int pageSize = 10)
         {
             if(search != null)
             {
-                return await (from employee in _context.UsersEmployees
-                              join role in _context.Roles on employee.Role equals role.Id
-                              where employee.LastName.Contains(search) || employee.FirstName.Contains(search) || employee.SecondName.Contains(search) || employee.Phone.Contains(search)
-                              select new
-                              {
-                                  ID = employee.Id,
-                                  Name = employee.LastName + " " + employee.FirstName + " " + employee.SecondName,
-                                  employee.Phone,
-                                  Role = role.Name
-                              }).ReturnPaginatedResult(pageNumber, pageSize).ToListAsync();
+                var query = from employee in _context.UsersEmployees
+                            join role in _context.Roles on employee.Role equals role.Id
+                            where employee.LastName.Contains(search) || employee.FirstName.Contains(search) || employee.SecondName.Contains(search) || employee.Phone.Contains(search)
+                            select new EmployeeGetManyResponse
+                            {
+                                Id = employee.Id,
+                                FullName = employee.LastName + " " + employee.FirstName + " " + employee.SecondName,
+                                Phone = employee.Phone,
+                                Role = role.Name
+                            };
+                return PaginationModel<EmployeeGetManyResponse>.GetPagedModel(query, pageNumber, pageSize);
             }
-            return await (from employee in _context.UsersEmployees
-                          join role in _context.Roles on employee.Role equals role.Id
-                              select new
-                              {
-                                  ID = employee.Id,
-                                  Name = employee.LastName + " " + employee.FirstName + " " + employee.SecondName,
-                                  employee.Phone,
-                                  Role = role.Name
-                              }).ReturnPaginatedResult(pageNumber, pageSize).ToListAsync();
+            else
+            {
+                var query = from employee in _context.UsersEmployees
+                            join role in _context.Roles on employee.Role equals role.Id
+                            select new EmployeeGetManyResponse
+                            {
+                                Id = employee.Id,
+                                FullName = employee.LastName + " " + employee.FirstName + " " + employee.SecondName,
+                                Phone = employee.Phone,
+                                Role = role.Name
+                            };
+                return PaginationModel<EmployeeGetManyResponse>.GetPagedModel(query, pageNumber, pageSize);
+            }
         }
 
         // GET: api/UsersEmployees/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<object>> GetUsersEmployee(int id)
+        public async Task<ActionResult<EmployeeGetSingleResponse>> GetUsersEmployee(int id)
         {
-            var usersEmployee = await _context.UsersEmployees.Select(e => new
+            var usersEmployee = await _context.UsersEmployees.Select(e => new EmployeeGetSingleResponse
             {
-                ID = e.Id,
-                e.FirstName,
-                e.SecondName,
-                e.LastName,
-                e.Phone,
-                e.Role
+                Id = e.Id,
+                FirstName = e.FirstName,
+                SecondName = e.SecondName,
+                LastName = e.LastName,
+                Phone = e.Phone,
+                Role = e.RoleNavigation
             }).FirstOrDefaultAsync();
 
             if (usersEmployee == null)

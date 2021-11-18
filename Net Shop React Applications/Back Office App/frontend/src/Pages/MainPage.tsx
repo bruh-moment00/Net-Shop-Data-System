@@ -7,7 +7,7 @@ export const MainPage = () => {
     <Page>
       <div className="row">
         <div className="col-xs-12 col-sm-12 col-md-4">
-          <Link to="/">
+          <Link to="/Products">
             <div className="floating-block transition">
               <h4>Список товаров</h4>
               <p>Добавление, редактирование и удаление товаров</p>

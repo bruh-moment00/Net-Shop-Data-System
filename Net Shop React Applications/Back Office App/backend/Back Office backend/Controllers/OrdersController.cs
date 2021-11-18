@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Back_Office_backend.Context;
 using Back_Office_backend.Models;
+using Back_Office_backend.Models.QueryModels;
+using Back_Office_backend.Paging;
 
 namespace Back_Office_backend.Controllers
 {
@@ -23,53 +25,58 @@ namespace Back_Office_backend.Controllers
 
         // GET: api/Orders
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<object>>> GetOrders(string search, int pageNumber = 1, int pageSize = 10)
+        public ActionResult<PaginationModel<OrderGetManyResponse>> GetOrders(string search, int pageNumber = 1, int pageSize = 10)
         {
             if(search != null)
             {
-                return await (from order in _context.Orders
-                              join client in _context.UsersClients on order.ClientId equals client.Id
-                              join status in _context.OrdersStatuses on order.Status equals status.Id
-                              join manager in _context.UsersEmployees on order.ManagerId equals manager.Id
-                              where order.Id.ToString().Contains(search) || status.Name.Contains(search) || manager.Id.ToString().Contains(search)
-                              select new
-                              {
-                                  ID = order.Id,
-                                  ClientName = client.LastName + " " + client.FirstName + " " + client.SecondName,
-                                  Status = status.Name,
-                                  order.UpdateDate,
-                                  order.Cost,
-                                  ManagerId = manager.Id
-                              }).ReturnPaginatedResult(pageNumber, pageSize).ToListAsync();
+                var query = from order in _context.Orders
+                            join client in _context.UsersClients on order.ClientId equals client.Id
+                            join status in _context.OrdersStatuses on order.Status equals status.Id
+                            join manager in _context.UsersEmployees on order.ManagerId equals manager.Id
+                            where order.Id.ToString().Contains(search) || status.Name.Contains(search) || manager.Id.ToString().Contains(search)
+                            select new OrderGetManyResponse
+                            {
+                                Id = order.Id,
+                                ClientFullName = client.LastName + " " + client.FirstName + " " + client.SecondName,
+                                Status = status.Name,
+                                UpdateDate = order.UpdateDate,
+                                Cost = order.Cost,
+                                ManagerId = manager.Id
+                            };
+                return PaginationModel<OrderGetManyResponse>.GetPagedModel(query, pageNumber, pageSize);
             }
-            return await (from order in _context.Orders
-                          join client in _context.UsersClients on order.ClientId equals client.Id
-                          join status in _context.OrdersStatuses on order.Status equals status.Id
-                          join manager in _context.UsersEmployees on order.ManagerId equals manager.Id
-                          select new
-                          {
-                              ID = order.Id,
-                              ClientName = client.LastName + " " + client.FirstName + " " + client.SecondName
-                              Status = status.Name,
-                              order.UpdateDate,
-                              order.Cost,
-                              ManagerId = manager.Id
-                          }).ReturnPaginatedResult(pageNumber, pageSize).ToListAsync();
+            else
+            {
+                var query = from order in _context.Orders
+                            join client in _context.UsersClients on order.ClientId equals client.Id
+                            join status in _context.OrdersStatuses on order.Status equals status.Id
+                            join manager in _context.UsersEmployees on order.ManagerId equals manager.Id
+                            select new OrderGetManyResponse
+                            {
+                                Id = order.Id,
+                                ClientFullName = client.LastName + " " + client.FirstName + " " + client.SecondName,
+                                Status = status.Name,
+                                UpdateDate = order.UpdateDate,
+                                Cost = order.Cost,
+                                ManagerId = manager.Id
+                            };
+                return PaginationModel<OrderGetManyResponse>.GetPagedModel(query, pageNumber, pageSize);
+            }
         }
 
         // GET: api/Orders/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<object>> GetOrder(int id)
+        public async Task<ActionResult<OrderGetSingleResponse>> GetOrder(int id)
         {
-            var order = await _context.Orders.Select(o => new
+            var order = await _context.Orders.Select(o => new OrderGetSingleResponse
             {
-                ID = o.Id,
+                Id = o.Id,
                 Client = o.Client,
-                Status = o.Status,
-                o.UpdateDate,
-                o.Cost,
+                Status = o.StatusNavigation,
+                UpdateDate = o.UpdateDate,
+                Cost = o.Cost,
                 Manager = o.Manager,
-            }).Where(o => o.ID == id).FirstOrDefaultAsync();
+            }).Where(o => o.Id == id).FirstOrDefaultAsync();
 
             if (order == null)
             {

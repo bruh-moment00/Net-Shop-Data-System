@@ -8,7 +8,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Header } from "./LayoutComponents/Header";
 import { Footer } from "./LayoutComponents/Footer";
 import { MainPage } from "./Pages/MainPage";
-import { ProductPage } from "./Pages/ProductPage";
+import { ProductPage } from "./Pages/Products/ProductPage";
+import { ProductsListPage } from "./Pages/Products/ProductsListPage";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Header />
           <Routes>
             <Route path="" element={<MainPage />} />
+            <Route path="Products" element={<ProductsListPage />} />
             <Route path="Products/:productId" element={<ProductPage />} />
           </Routes>
         </div>

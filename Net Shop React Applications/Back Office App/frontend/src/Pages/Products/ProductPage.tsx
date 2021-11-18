@@ -1,15 +1,11 @@
 import React from "react";
 
-import { Page } from "../LayoutComponents/Page";
+import { Page } from "../../LayoutComponents/Page";
 
 import { useParams } from "react-router-dom";
 import { Button } from "react-bootstrap";
 
-import {
-  ProductDataFull,
-  getProductFull,
-  ProductDataFromServer,
-} from "../Data/ProductsData";
+import { ProductDataFull, getProductFull } from "../../Data/ProductsData";
 
 export const ProductPage = () => {
   const [product, setProduct] = React.useState<ProductDataFull | null>(null);
