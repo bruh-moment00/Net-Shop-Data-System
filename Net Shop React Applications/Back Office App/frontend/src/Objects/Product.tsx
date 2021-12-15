@@ -11,6 +11,6 @@ interface Props {
 
 export const Product = ({ data, showContent = true }: Props) => (
   <div>
-    <Link to={`/Products/${data.Id}`}>{data.Name}</Link>
+    <Link to={`/Products/${data.id}`}>{data.name}</Link>
   </div>
 );

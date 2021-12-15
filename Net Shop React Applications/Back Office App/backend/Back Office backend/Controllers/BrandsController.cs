@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Back_Office_backend.Context;
 using Back_Office_backend.Models;
+using Back_Office_backend.Models.QueryModels;
 
 namespace Back_Office_backend.Controllers
 {
@@ -23,9 +24,15 @@ namespace Back_Office_backend.Controllers
 
         // GET: api/Brands
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Brand>>> GetBrands()
+        public async Task<ActionResult<IEnumerable<BrandsGetSingleResponse>>> GetBrands()
         {
-            return await _context.Brands.ToListAsync();
+            var query = from brand in _context.Brands
+                                            select new BrandsGetSingleResponse
+                                            {
+                                                Id = brand.Id,
+                                                Name = brand.Brand1
+                                            };
+            return await query.ToListAsync();
         }
 
         // GET: api/Brands/5

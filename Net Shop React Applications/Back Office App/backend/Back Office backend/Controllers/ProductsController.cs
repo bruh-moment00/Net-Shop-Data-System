@@ -23,7 +23,7 @@ namespace Back_Office_backend.Controllers
 
         // GET: api/Products
         [HttpGet]
-        public ActionResult<PaginationModel<ProductGetManyResponse>> GetProducts(string search, int pageNumber = 1, int pageSize = 10) //TODO - сделать модели для запросов вместо object
+        public ActionResult<PaginationModel<ProductGetManyResponse>> GetProducts(string search, int pageNumber = 1, int pageSize = 10) 
         {
             if (search != null)
             {

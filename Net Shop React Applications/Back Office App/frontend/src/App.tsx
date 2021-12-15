@@ -10,6 +10,8 @@ import { Footer } from "./LayoutComponents/Footer";
 import { MainPage } from "./Pages/MainPage";
 import { ProductPage } from "./Pages/Products/ProductPage";
 import { ProductsListPage } from "./Pages/Products/ProductsListPage";
+import { AddProductPage } from "./Pages/Products/AddProduct";
+import { LoginPage } from "./Pages/LoginPage";
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
             <Route path="" element={<MainPage />} />
             <Route path="Products" element={<ProductsListPage />} />
             <Route path="Products/:productId" element={<ProductPage />} />
+            <Route path="Products/Create" element={<AddProductPage />} />
+            <Route path="Login" element={<LoginPage />} />
           </Routes>
         </div>
         <Footer />

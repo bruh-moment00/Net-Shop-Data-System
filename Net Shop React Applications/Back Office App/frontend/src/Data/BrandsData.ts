@@ -1,8 +1,8 @@
 import { http } from "../http";
 
 export interface BrandData {
-  Id: number;
-  Name: string;
+  id: number;
+  name: string;
 }
 
 export const getBrands = async (): Promise<BrandData[] | undefined> => {

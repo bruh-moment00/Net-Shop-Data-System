@@ -31,8 +31,8 @@ export const ProductAddPage = () => {
 
   const submitForm = async (data: FormData) => {
     const result = await postProduct({
-      categoryId: data.category.Id,
-      brandId: data.brand.Id,
+      categoryId: data.category.id,
+      brandId: data.brand.id,
       name: data.name,
       price: data.price,
       description: data.description,

@@ -1,43 +1,58 @@
 import React from "react";
-import { Nav, PageItem, Pagination } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import { getProducts, ProductData } from "../../Data/ProductsData";
+
+import { Nav, Button } from "react-bootstrap";
+
+import { Link, useSearchParams } from "react-router-dom";
+
+import { getProducts, ProductDataWithPaging } from "../../Data/ProductsData";
 import { Page } from "../../LayoutComponents/Page";
 import { ProductList } from "../../Objects/ProductsList";
+import { Paging } from "../../LayoutComponents/Paging";
 
 export const ProductsListPage = () => {
-  const [products, setProducts] = React.useState<ProductData[] | undefined>([]);
+  const [products, setProducts] = React.useState<
+    ProductDataWithPaging | undefined
+  >();
   const [productsLoading, setProductsLoading] = React.useState(true);
+  const [searchParams] = useSearchParams();
 
   React.useEffect(() => {
     let cancelled = false;
-    const doGetProducts = async () => {
-      const productsList = await getProducts();
+    const doGetProducts = async (params: URLSearchParams) => {
+      const productsList = await getProducts(params);
       if (!cancelled) {
         setProducts(productsList);
         setProductsLoading(false);
       }
     };
-    doGetProducts();
+    doGetProducts(searchParams);
     return () => {
       cancelled = true;
     };
-  }, []);
-
-  const navigate = useNavigate();
+  }, [searchParams]);
 
   return (
-    <Page>
+    <Page title="Товары">
+      <Link to="./Create">
+        <Button variant="outline-primary">Добавить</Button>
+      </Link>
+      <hr />
       {productsLoading ? (
-        <div>Loading...</div>
+        <div>Загрузка...</div>
       ) : (
-        <ProductList data={products || []} />
+        <ProductList data={products?.items} />
       )}
-      <Nav>
-        <Pagination>
-          <PageItem></PageItem>
-        </Pagination>
-      </Nav>
+      {products !== undefined && (
+        <Nav>
+          <Paging
+            pageNumber={products.currentPage}
+            totalPages={products.totalPages}
+            hasPrevious={products.hasPrevious}
+            hasNext={products.hasNext}
+            pageSize={products.pageSize}
+          />
+        </Nav>
+      )}
     </Page>
   );
 };

@@ -37,17 +37,17 @@ export const ProductPage = () => {
         <div>
           <dl className="row">
             <dt className="col-sm-2">Наименование</dt>
-            <dd className="col-sm-10">{product?.Name}</dd>
+            <dd className="col-sm-10">{product?.name}</dd>
             <dt className="col-sm-2">Цена</dt>
-            <dd className="col-sm-10">{product?.Price}</dd>
+            <dd className="col-sm-10">{product?.price}</dd>
             <dt className="col-sm-2">Описание</dt>
-            <dd className="col-sm-10">{product?.Description}</dd>
+            <dd className="col-sm-10">{product?.description}</dd>
             <dt className="col-sm-2">Характеристики</dt>
-            <dd className="col-sm-10">{product?.Specs}</dd>
+            <dd className="col-sm-10">{product?.specs}</dd>
             <dt className="col-sm-2">Производитель</dt>
-            <dd className="col-sm-10">{product?.Brand.Name}</dd>
+            <dd className="col-sm-10">{product?.brand.name}</dd>
             <dt className="col-sm-2">Категория</dt>
-            <dd className="col-sm-10">{product?.Category.Name}</dd>
+            <dd className="col-sm-10">{product?.category.name}</dd>
           </dl>
         </div>
         <div>

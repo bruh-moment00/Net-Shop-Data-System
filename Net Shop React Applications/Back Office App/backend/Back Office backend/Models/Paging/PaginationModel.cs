@@ -21,6 +21,7 @@ namespace Back_Office_backend.Paging
 			TotalCount = count;
 			PageSize = pageSize;
 			CurrentPage = pageNumber;
+
 			TotalPages = (int)Math.Ceiling(count / (double)pageSize);
 
 			Items = items;
@@ -29,7 +30,13 @@ namespace Back_Office_backend.Paging
         public static PaginationModel<T> GetPagedModel(IQueryable<T> source, int pageNumber, int pageSize)
         {
             var count = source.Count();
-            var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+			if (pageSize > 20) pageSize = 20;
+			else if (pageSize < 1) pageSize = 1;
+
+			if (pageNumber < 1) pageNumber = 1;
+
+			var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
 
             return new PaginationModel<T>(items, count, pageNumber, pageSize);
         }

@@ -11,16 +11,18 @@ export interface ProductData {
   price: number;
   image: string;
 }
-
+export interface ProductDataWithPaging extends ListDataWithPaging {
+  items: ProductData[];
+}
 export interface ProductDataFull {
-  Id: number;
-  Category: CategoryData;
-  Brand: BrandData;
-  Name: string;
-  Price: number;
-  Description: string;
-  Specs: string;
-  Image: string;
+  id: number;
+  category: CategoryData;
+  brand: BrandData;
+  name: string;
+  price: number;
+  description: string;
+  specs: string;
+  image: string;
 }
 
 export interface ProductDataFullFromServer {
@@ -55,28 +57,30 @@ export interface ProductDataForPost {
 export const mapProductFullFromServer = (
   product: ProductDataFullFromServer
 ): ProductDataFull => ({
-  Id: product.id,
-  Category: {
-    Id: product.category.id,
-    Name: product.category.name,
+  id: product.id,
+  category: {
+    id: product.category.id,
+    name: product.category.name,
   },
-  Brand: {
-    Id: product.brand.id,
-    Name: product.brand.brand1,
+  brand: {
+    id: product.brand.id,
+    name: product.brand.brand1,
   },
-  Name: product.name,
-  Price: product.price,
-  Description: product.description,
-  Specs: product.specs,
-  Image: product.image,
+  name: product.name,
+  price: product.price,
+  description: product.description,
+  specs: product.specs,
+  image: product.image,
 });
 
-export const getProducts = async (): Promise<ProductData[] | undefined> => {
-  const result = await http<ListDataWithPaging>({
-    path: `/Products`,
+export const getProducts = async (
+  params: URLSearchParams
+): Promise<ProductDataWithPaging | undefined> => {
+  const result = await http<ProductDataWithPaging>({
+    path: `/Products?${params.toString()}`,
   });
   if (result.ok || result.body) {
-    return result.body?.items;
+    return result.body;
   } else {
     return undefined;
   }
