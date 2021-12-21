@@ -16,6 +16,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Back_Office_backend.Middleware;
+using Back_Office_backend.Services;
 
 namespace Back_Office_backend
 {
@@ -79,6 +81,8 @@ namespace Back_Office_backend
                 };
             });
 
+            services.AddScoped<IUserService, UserService>();
+
             services.AddDbContext<NetStoreDBContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("NetStoreDB")));
             services.AddCors(options =>
@@ -103,7 +107,9 @@ namespace Back_Office_backend
 
             app.UseRouting();
             app.UseCors("CorsPolicy");
+
             app.UseAuthorization();
+            app.UseMiddleware<JWTMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
