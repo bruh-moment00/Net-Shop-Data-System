@@ -1,4 +1,6 @@
 import { webAPIUrl } from "./AppSettings";
+import authHeader from "./Services/AuthHeader";
+
 export interface HttpRequest<REQB> {
   path: string;
   method?: string;
@@ -21,8 +23,9 @@ export const http = async <RESB, REQB = undefined>(
     body: config.body ? JSON.stringify(config.body) : undefined,
   });
 
-  if (config.accessToken) {
-    request.headers.set("authorization", `bearer ${config.accessToken}`);
+  const accessToken = authHeader();
+  if (accessToken) {
+    request.headers.set("Authorization", `Bearer ${accessToken}`);
   }
 
   const response = await fetch(request);

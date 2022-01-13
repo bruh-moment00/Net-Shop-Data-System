@@ -1,4 +1,4 @@
-import { RoleData } from "./RolesData";
+import { EnumType } from "typescript";
 
 export interface User {
   email: string;
@@ -6,5 +6,5 @@ export interface User {
   secondName?: string;
   lastName: string;
   phone: string;
-  role: RoleData;
+  role: EnumType;
 }

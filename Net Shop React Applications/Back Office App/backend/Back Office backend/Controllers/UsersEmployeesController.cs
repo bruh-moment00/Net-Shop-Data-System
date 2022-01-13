@@ -9,9 +9,12 @@ using Back_Office_backend.Context;
 using Back_Office_backend.Models;
 using Back_Office_backend.Models.QueryModels;
 using Back_Office_backend.Paging;
+using Back_Office_backend.Helpers;
+using Back_Office_backend.Middleware;
 
 namespace Back_Office_backend.Controllers
 {
+    [Authorize(Role.Admin)]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersEmployeesController : ControllerBase
@@ -30,27 +33,25 @@ namespace Back_Office_backend.Controllers
             if(search != null)
             {
                 var query = from employee in _context.UsersEmployees
-                            join role in _context.Roles on employee.Role equals role.Id
                             where employee.LastName.Contains(search) || employee.FirstName.Contains(search) || employee.SecondName.Contains(search) || employee.Phone.Contains(search)
                             select new EmployeeGetManyResponse
                             {
                                 Id = employee.Id,
                                 FullName = employee.LastName + " " + employee.FirstName + " " + employee.SecondName,
                                 Phone = employee.Phone,
-                                Role = role.Name
+                                Role = employee.Role.GetRoleName()
                             };
                 return PaginationModel<EmployeeGetManyResponse>.GetPagedModel(query, pageNumber, pageSize);
             }
             else
             {
                 var query = from employee in _context.UsersEmployees
-                            join role in _context.Roles on employee.Role equals role.Id
                             select new EmployeeGetManyResponse
                             {
                                 Id = employee.Id,
                                 FullName = employee.LastName + " " + employee.FirstName + " " + employee.SecondName,
                                 Phone = employee.Phone,
-                                Role = role.Name
+                                Role = employee.Role.GetRoleName()
                             };
                 return PaginationModel<EmployeeGetManyResponse>.GetPagedModel(query, pageNumber, pageSize);
             }
@@ -67,7 +68,7 @@ namespace Back_Office_backend.Controllers
                 SecondName = e.SecondName,
                 LastName = e.LastName,
                 Phone = e.Phone,
-                Role = e.RoleNavigation
+                Role = e.Role
             }).FirstOrDefaultAsync();
 
             if (usersEmployee == null)

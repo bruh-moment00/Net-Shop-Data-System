@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Back_Office_backend.Models.AuthModels
 {
-    public class AuthResponse
+    public class TokenCheckModel
     {
-        public int UserId { get; set; }
-        public string Token { get; set; }
+        public DateTime ExpirationTime { get; set; }
+        public bool IsExpired { get; set; }
     }
 }

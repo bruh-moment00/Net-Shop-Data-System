@@ -14,6 +14,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using System.Text;
+using Back_Office_backend.Models.QueryModels;
+using Back_Office_backend.Helpers;
 
 namespace Back_Office_backend.Controllers
 {
@@ -21,13 +23,12 @@ namespace Back_Office_backend.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        //private readonly NetStoreDBContext _context;
-        //private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
-        public AuthController(NetStoreDBContext context, IUserService userService)
+        private readonly IConfiguration _configuration;
+        public AuthController(IUserService userService, IConfiguration configuration)
         {
-            //_context = context;
             _userService = userService;
+            _configuration = configuration;
         }
 
         [AllowAnonymous]
@@ -39,7 +40,7 @@ namespace Back_Office_backend.Controllers
                 return BadRequest("Введите логин и пароль");
             }
 
-            var loginResponse = _userService.ValidateAndGetUserId(data);
+            var loginResponse = _userService.ValidateAndGetUserToken(data);
 
             if(loginResponse == null)
             {
@@ -49,27 +50,27 @@ namespace Back_Office_backend.Controllers
             return Ok(loginResponse);
         }
         [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
-        [HttpGet(nameof(GetResult))]
-        public IActionResult GetResult()
+        [HttpGet(nameof(GetUserData))]
+        public EmployeeGetSingleResponse GetUserData([FromHeader(Name = "Authorization")] string token)
         {
-            return Ok("API Validated");
+            token = token.Replace("Bearer ", "");
+            int userId = TokenDescriptor.GetUserIdFromToken(token, _configuration);
+
+            return _userService.GetById(userId);
         }
 
-        //private string GenerateJwtToken(int userId)
-        //{
-        //    var tokenHandler = new JwtSecurityTokenHandler();
-        //    var key = Encoding.ASCII.GetBytes(_configuration["JWT:key"]);
-        //    var tokenDescriptor = new SecurityTokenDescriptor
-        //    {
-        //        Subject = new ClaimsIdentity(new[] { new Claim("id", userId.ToString()) }),
-        //        Expires = DateTime.UtcNow.AddHours(1),
-        //        Issuer = _configuration["Jwt:Issuer"],
-        //        Audience = _configuration["Jwt:Audience"],
-        //        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-        //    };
-        //    var token = tokenHandler.CreateToken(tokenDescriptor);
-        //    return tokenHandler.WriteToken(token);
-        //}
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
+        [HttpGet(nameof(IsTokenExpired))]
+        public TokenCheckModel IsTokenExpired([FromHeader(Name = "Authorization")] string token)
+        {
+            token = token.Replace("Bearer ", "");
 
+            DateTime tokenExpirationTime = TokenDescriptor.GetTokenExpirationDate(token, _configuration);
+            return new TokenCheckModel
+            {
+                ExpirationTime = tokenExpirationTime,
+                IsExpired = DateTime.UtcNow > tokenExpirationTime
+            };
+        }
     }
 }

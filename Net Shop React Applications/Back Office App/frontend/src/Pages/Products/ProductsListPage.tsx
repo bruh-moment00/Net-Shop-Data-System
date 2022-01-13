@@ -6,8 +6,8 @@ import { Link, useSearchParams } from "react-router-dom";
 
 import { getProducts, ProductDataWithPaging } from "../../Data/ProductsData";
 import { Page } from "../../LayoutComponents/Page";
-import { ProductList } from "../../Objects/ProductsList";
-import { Paging } from "../../LayoutComponents/Paging";
+import { ProductList } from "../../Components/ProductsList";
+import { Paging } from "../../Components/Paging";
 
 export const ProductsListPage = () => {
   const [products, setProducts] = React.useState<

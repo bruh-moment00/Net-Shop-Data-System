@@ -7,6 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using Back_Office_backend.Services;
+using Back_Office_backend.Helpers;
 using System.Text;
 
 namespace Back_Office_backend.Middleware
@@ -28,7 +29,8 @@ namespace Back_Office_backend.Middleware
         {
             var token = context.Request.Headers["Authorization"].FirstOrDefault();
 
-            if(token != null)
+            if (token != null)
+                token = token.Replace("Bearer ", ""); // Removing "Bearer " from token
                 attachAccountToContext(context, token);
 
             await _next(context);
@@ -38,22 +40,10 @@ namespace Back_Office_backend.Middleware
         {
             try
             {
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(_configuration["JWT:Key"]);
-                tokenHandler.ValidateToken(token, new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ClockSkew = TimeSpan.Zero
-                }, out SecurityToken validatedToken);
+                int userId = TokenDescriptor.GetUserIdFromToken(token, _configuration);
 
-                var jwtToken = (JwtSecurityToken)validatedToken;
-                var accountId = jwtToken.Claims.First(x => x.Type == "id").Value;
-
-                context.Items["User"] = _userService.GetById(Convert.ToInt32(accountId));
-            }
+                context.Items["User"] = _userService.GetById(userId);
+        }
             catch
             {
 

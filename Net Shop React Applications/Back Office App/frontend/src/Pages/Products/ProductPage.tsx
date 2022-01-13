@@ -3,9 +3,9 @@ import React from "react";
 import { Page } from "../../LayoutComponents/Page";
 
 import { useParams } from "react-router-dom";
-import { Button } from "react-bootstrap";
 
 import { ProductDataFull, getProductFull } from "../../Data/ProductsData";
+import { BackButton } from "../../Components/BackButton";
 
 export const ProductPage = () => {
   const [product, setProduct] = React.useState<ProductDataFull | null>(null);
@@ -51,7 +51,7 @@ export const ProductPage = () => {
           </dl>
         </div>
         <div>
-          <Button variant="link">Назад</Button>
+          <BackButton />
         </div>
       </div>
     </Page>

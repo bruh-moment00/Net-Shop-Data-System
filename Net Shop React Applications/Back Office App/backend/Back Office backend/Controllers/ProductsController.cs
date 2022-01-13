@@ -7,9 +7,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Back_Office_backend.Paging;
 using Back_Office_backend.Models.QueryModels;
+using Back_Office_backend.Middleware;
 
 namespace Back_Office_backend.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase

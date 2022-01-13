@@ -24,7 +24,6 @@ namespace Back_Office_backend.Context
         public virtual DbSet<OrderedProduct> OrderedProducts { get; set; }
         public virtual DbSet<OrdersStatus> OrdersStatuses { get; set; }
         public virtual DbSet<Product> Products { get; set; }
-        public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Stock> StockList { get; set; }
         public virtual DbSet<StockStatus> StockStatuses { get; set; }
         public virtual DbSet<UsersClient> UsersClients { get; set; }
@@ -154,17 +153,6 @@ namespace Back_Office_backend.Context
                     .HasForeignKey(d => d.CategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Products_Categories");
-            });
-
-            modelBuilder.Entity<Role>(entity =>
-            {
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
-
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(50);
             });
 
             modelBuilder.Entity<Stock>(entity =>
@@ -299,12 +287,6 @@ namespace Back_Office_backend.Context
                     .HasForeignKey<UsersEmployee>(d => d.Id)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Employees_EmployeesLogin");
-
-                entity.HasOne(d => d.RoleNavigation)
-                    .WithMany(p => p.UsersEmployees)
-                    .HasForeignKey(d => d.Role)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Employees_Roles");
             });
 
             modelBuilder.Entity<UsersEmployeesLogin>(entity =>

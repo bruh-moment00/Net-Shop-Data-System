@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using Back_Office_backend.Context;
 using Back_Office_backend.Models;
 using Back_Office_backend.Models.QueryModels;
+using Back_Office_backend.Middleware;
 
 namespace Back_Office_backend.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class BrandsController : ControllerBase
