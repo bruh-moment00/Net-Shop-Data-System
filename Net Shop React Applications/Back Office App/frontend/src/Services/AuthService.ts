@@ -1,8 +1,13 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 
 import { webAPIUrl } from "../AppSettings";
 import { User } from "../Data/UserData";
 import authHeader from "./AuthHeader";
+
+export interface TokenCheckModel {
+  expirationTime: Date;
+  isExpired: boolean;
+}
 
 export const login = (
   email: string,
@@ -33,7 +38,22 @@ export const getCurrentUser = (): Promise<User | undefined> => {
         Authorization: authHeader(),
       },
     })
-    .then((response: AxiosResponse) => {
+    .then((response) => {
       return response.data as User;
+    });
+};
+
+export const isTokenValid = (): Promise<boolean | undefined> => {
+  return axios
+    .get(webAPIUrl + "/Auth/IsTokenValid", {
+      headers: {
+        Authorization: authHeader(),
+      },
+    })
+    .then(() => {
+      return true;
+    })
+    .catch(() => {
+      return false;
     });
 };

@@ -1,9 +1,23 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
+import { getCurrentUser } from "../Services/AuthService";
 
 export const Header = () => {
+  const [userName, setUserName] = React.useState<string | undefined>(undefined);
+
+  React.useEffect(() => {
+    if (localStorage.getItem("token")) {
+      const doGetUserName = async () => {
+        const user = await getCurrentUser();
+        if (user)
+          setUserName(user?.lastName + user?.firstName + user?.secondName);
+      };
+      doGetUserName();
+    }
+  });
+
   return (
     <header>
       <Navbar expand="sm" bg="white" className="border-bottom box-shadow">
@@ -26,6 +40,16 @@ export const Header = () => {
                 </NavDropdown.Item>
                 <NavDropdown.Item>
                   <Link to="/">Заказы</Link>
+                </NavDropdown.Item>
+              </NavDropdown>
+            </Nav>
+            <Nav className="d-flex">
+              <NavDropdown title={userName} className="justify-content-end">
+                <NavDropdown.Item>
+                  <Link to="/Profile">Профиль</Link>
+                </NavDropdown.Item>
+                <NavDropdown.Item>
+                  <Link to="/SignOut">Выход</Link>
                 </NavDropdown.Item>
               </NavDropdown>
             </Nav>

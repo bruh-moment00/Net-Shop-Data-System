@@ -60,17 +60,10 @@ namespace Back_Office_backend.Controllers
         }
 
         [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
-        [HttpGet(nameof(IsTokenExpired))]
-        public TokenCheckModel IsTokenExpired([FromHeader(Name = "Authorization")] string token)
+        [HttpGet(nameof(IsTokenValid))]
+        public ActionResult IsTokenValid()
         {
-            token = token.Replace("Bearer ", "");
-
-            DateTime tokenExpirationTime = TokenDescriptor.GetTokenExpirationDate(token, _configuration);
-            return new TokenCheckModel
-            {
-                ExpirationTime = tokenExpirationTime,
-                IsExpired = DateTime.UtcNow > tokenExpirationTime
-            };
+            return Ok("token valid");
         }
     }
 }
