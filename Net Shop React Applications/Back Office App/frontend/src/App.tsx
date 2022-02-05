@@ -14,13 +14,16 @@ import { AddProductPage } from "./Pages/Products/AddProduct";
 import { LoginPage } from "./Pages/LoginPage";
 import { ProfilePage } from "./Pages/ProfilePage";
 import { SignOutPage } from "./Pages/SignOutPage";
+import { AuthRequiredElement } from "./Components/AuthRequired";
 
 function App() {
   return (
     <BrowserRouter>
       <div className="page-container">
         <div className="content-wrap">
-          <Header />
+          <AuthRequiredElement>
+            <Header />
+          </AuthRequiredElement>
           <Routes>
             <Route path="" element={<MainPage />} />
             <Route path="Products" element={<ProductsListPage />} />

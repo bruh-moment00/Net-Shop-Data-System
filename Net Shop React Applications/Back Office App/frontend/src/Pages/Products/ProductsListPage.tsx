@@ -8,6 +8,8 @@ import { getProducts, ProductDataWithPaging } from "../../Data/ProductsData";
 import { Page } from "../../LayoutComponents/Page";
 import { ProductList } from "../../Components/ProductsList";
 import { Paging } from "../../Components/Paging";
+import { AuthorizedPage } from "../../Components/AuthRequired";
+import { Role } from "../../Data/RolesData";
 
 export const ProductsListPage = () => {
   const [products, setProducts] = React.useState<
@@ -32,27 +34,29 @@ export const ProductsListPage = () => {
   }, [searchParams]);
 
   return (
-    <Page title="Товары">
-      <Link to="./Create">
-        <Button variant="outline-primary">Добавить</Button>
-      </Link>
-      <hr />
-      {productsLoading ? (
-        <div>Загрузка...</div>
-      ) : (
-        <ProductList data={products?.items} />
-      )}
-      {products !== undefined && (
-        <Nav>
-          <Paging
-            pageNumber={products.currentPage}
-            totalPages={products.totalPages}
-            hasPrevious={products.hasPrevious}
-            hasNext={products.hasNext}
-            pageSize={products.pageSize}
-          />
-        </Nav>
-      )}
-    </Page>
+    <AuthorizedPage requiredRole={Role.Admin}>
+      <Page title="Товары">
+        <Link to="./Create">
+          <Button variant="outline-primary">Добавить</Button>
+        </Link>
+        <hr />
+        {productsLoading ? (
+          <div>Загрузка...</div>
+        ) : (
+          <ProductList data={products?.items} />
+        )}
+        {products !== undefined && (
+          <Nav>
+            <Paging
+              pageNumber={products.currentPage}
+              totalPages={products.totalPages}
+              hasPrevious={products.hasPrevious}
+              hasNext={products.hasNext}
+              pageSize={products.pageSize}
+            />
+          </Nav>
+        )}
+      </Page>
+    </AuthorizedPage>
   );
 };

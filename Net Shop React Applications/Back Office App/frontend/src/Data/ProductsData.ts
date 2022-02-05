@@ -84,11 +84,6 @@ export const getProducts = async (
   } else {
     return undefined;
   }
-  /*return axios.get(webAPIUrl + "/Products?" + params.toString(), {
-    headers: {
-      Authorization: authHeader(),
-    },
-  });*/
 };
 
 export const getProductFull = async (

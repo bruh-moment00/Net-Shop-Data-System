@@ -8,6 +8,7 @@ export const SignOutPage = () => {
   React.useEffect(() => {
     logout();
     navigate("/Login");
+    window.location.reload();
   });
 
   return (

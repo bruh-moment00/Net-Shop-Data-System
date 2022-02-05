@@ -24,7 +24,7 @@ export const LoginPage = () => {
         cancelled = true;
       };
     } else setLoadThisPage(true);
-  });
+  }, []);
 
   return (
     <Page title="Вход в систему">{loadThisPage ? <LoginForm /> : <></>}</Page>

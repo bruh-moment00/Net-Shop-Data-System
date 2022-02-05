@@ -1,4 +1,5 @@
 import React from "react";
+import { AuthorizedPage } from "../Components/AuthRequired";
 import { User } from "../Data/UserData";
 import { Page } from "../LayoutComponents/Page";
 import { getCurrentUser } from "../Services/AuthService";
@@ -19,5 +20,9 @@ export const ProfilePage = () => {
       cancelled = true;
     };
   }, []);
-  return <Page title="Профиль">{JSON.stringify(currentUser)}</Page>;
+  return (
+    <AuthorizedPage>
+      <Page title="Профиль">{JSON.stringify(currentUser)}</Page>;
+    </AuthorizedPage>
+  );
 };
